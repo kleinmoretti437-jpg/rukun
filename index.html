@@ -298,7 +298,7 @@ ul{list-style:none}
 ============================================= */
 .navbar{
   position:fixed;top:0;left:0;right:0;z-index:1000;
-  padding:0 20px;transition:all .3s ease;
+  padding:0 20px;transition:background .3s ease,box-shadow .3s ease,backdrop-filter .3s ease;
 }
 .navbar.solid{
   background:rgba(245,243,237,.94);
@@ -4874,10 +4874,18 @@ function goPage(id){
 ============================================ */
 const nb = document.getElementById('navbar');
 const stb = document.getElementById('scrollTopBtn');
-window.addEventListener('scroll',()=>{
+let _nbTicking = false;
+function _nbUpdate(){
   if(window.scrollY>60){ nb.classList.add('solid'); stb.classList.add('vis'); }
   else { if(currentPage==='beranda') nb.classList.remove('solid'); stb.classList.remove('vis'); }
-});
+  _nbTicking = false;
+}
+window.addEventListener('scroll',()=>{
+  if(!_nbTicking){
+    requestAnimationFrame(_nbUpdate);
+    _nbTicking = true;
+  }
+}, {passive:true});
 
 /* ============================================
    BURGER
