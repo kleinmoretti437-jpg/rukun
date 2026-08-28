@@ -1,3 +1,4 @@
+
     const _sb = supabase.createClient(
       'https://ofmuuzabsgeaonjoympc.supabase.co',
       'sb_publishable_ZpLY0y18asU1U5dZxI95Qg_phbQ_K6U'
@@ -16,6 +17,7 @@
     }
   
 
+
 /* ============================================
    LOADER
 ============================================ */
@@ -26,7 +28,18 @@ function _hideLoader(){
   const elapsed = Date.now() - _loaderStart;
   const minShow = 3000;
   const delay = Math.max(0, minShow - elapsed);
-  setTimeout(()=>{ document.getElementById('loader').classList.add('out'); }, delay);
+  setTimeout(()=>{
+    const loader = document.getElementById('loader');
+    loader.classList.add('out');
+    // Matikan semua animasi infinite di dalam loader setelah fade-out selesai
+    // agar tidak terus makan GPU di background
+    setTimeout(()=>{
+      loader.querySelectorAll('*').forEach(el=>{
+        el.style.animationPlayState = 'paused';
+      });
+      loader.style.display = 'none';
+    }, 700);
+  }, delay);
 }
 if(document.readyState === 'loading'){
   document.addEventListener('DOMContentLoaded', _hideLoader);
@@ -39,7 +52,7 @@ setTimeout(()=>{ document.getElementById('loader').classList.add('out'); }, 4000
 /* ============================================
    SPA NAVIGATION
 ============================================ */
-const pages = ['beranda','tentang','fitur','cara-kerja','kontak','roadmap','sdg','makna-pernikahan','pendaftaran-nikah','simulasi-biaya-nikah','modul-edukasi'];
+const pages = ['beranda','tentang','fitur','cara-kerja','kontak','roadmap','sdg','makna-pernikahan','pendaftaran-nikah','simulasi-biaya-nikah','modul-edukasi','privasi','ketentuan','cookie'];
 let currentPage = 'beranda';
 
 function goPage(id){
@@ -88,6 +101,11 @@ function goPage(id){
   }
   // inisialisasi Turnstile saat buka halaman kontak
   if(id==='kontak') setTimeout(initTurnstile, 300);
+
+  // NAV-01: Sinkronisasi dengan browser history supaya tombol Back berfungsi
+  if(history.state?.rmPage !== id){
+    history.pushState({rmPage:id}, '', '#'+id);
+  }
 }
 
 /* ============================================
@@ -173,7 +191,7 @@ const features=[
     title:'Modul Edukasi Interaktif',icon:'fa-book-open-reader',cls:'ic6',
     desc:'Seri modul pembelajaran mendalam dan interaktif tentang literasi finansial, komunikasi keluarga, parenting Islami, dan pengembangan diri bagi pasangan muda.',
     points:['Literasi keuangan: budgeting, investasi halal, asuransi syariah','Komunikasi asertif dan manajemen konflik dalam keluarga','Parenting Islami: mendidik anak di era digital','Manajemen stres dan kesehatan mental keluarga','Sertifikat digital setelah menyelesaikan setiap modul'],
-    extra:'Lebih dari 40 modul yang terus diperbarui oleh tim pakar berpengalaman.'
+    extra:'Terdapat modul edukasi yang dapat membantu kehidupan bagi catin .'
   },
   {
     title:'Dashboard SDGs',icon:'fa-chart-pie',cls:'ic7',
@@ -235,6 +253,11 @@ function openDetail(i){
           <span class="sf-pill-label">Perencanaan Masa Depan</span>
           <i class="fa-solid fa-chevron-right sf-pill-arrow"></i>
         </button>
+        <button class="sf-pill" onclick="openSubFitur('kredit-cicilan')">
+          <span class="sf-pill-icon" style="background:#FEF2F2;color:#B91C1C"><i class="fa-solid fa-credit-card"></i></span>
+          <span class="sf-pill-label">Kredit &amp; Cicilan</span>
+          <i class="fa-solid fa-chevron-right sf-pill-arrow"></i>
+        </button>
       </div>
     </div>` : '';
 
@@ -250,7 +273,7 @@ function openDetail(i){
         </button>
         <button class="sf-pill" onclick="openSubFitur('live-youtube')">
           <span class="sf-pill-icon" style="background:#FFE8E8;color:#E05252"><i class="fa-brands fa-youtube"></i></span>
-          <span class="sf-pill-label">Live YouTube</span>
+          <span class="sf-pill-label">Live Video</span>
           <i class="fa-solid fa-chevron-right sf-pill-arrow"></i>
         </button>
       </div>
@@ -339,7 +362,7 @@ function openSubFitur(id){
       hasGallery: false
     },
     'live-youtube':{
-      title:'Live YouTube',
+      title:'Live Video',
       icon:'fa-brands fa-youtube',
       iconBg:'#FFE8E8',iconColor:'#E05252',
       desc:'Tonton siaran langsung kajian pernikahan dan keluarga Islami bersama RUKUN MAPAN',
@@ -357,6 +380,13 @@ function openSubFitur(id){
       icon:'fa-id-card',
       iconBg:'#E8F4EF',iconColor:'var(--p)',
       desc:'Ringkasan komitmen dan aktivitas SDGs keluarga Anda',
+      hasGallery: false
+    },
+    'kredit-cicilan':{
+      title:'Kredit & Cicilan',
+      icon:'fa-credit-card',
+      iconBg:'#FEF2F2',iconColor:'#B91C1C',
+      desc:'Pahami risiko kredit macet dan batas aman cicilan menurut OJK',
       hasGallery: false
     }
   };
@@ -524,9 +554,9 @@ function openSubFitur(id){
       sdg1:    sessionStorage.getItem('sdg_sdg1')==='1',
       sdg3:    sessionStorage.getItem('sdg_sdg3')==='1',
       sdg4:    sessionStorage.getItem('sdg_sdg4')==='1',
-      sdg10:   sessionStorage.getItem('sdg_sdg10')==='1',
-      sdg16:   sessionStorage.getItem('sdg_sdg16')==='1',
-      signed:  sessionStorage.getItem('sdg_signed')==='1',
+      sdg10: sessionStorage.getItem('sdg_sdg10')==='1',
+      sdg16: sessionStorage.getItem('sdg_sdg16')==='1',
+      signed: sessionStorage.getItem('sdg_signed')==='1',
       tanggal: sessionStorage.getItem('sdg_tanggal') || '',
     };
     document.getElementById('sfBody').innerHTML = `
@@ -572,13 +602,9 @@ function openSubFitur(id){
                 <div style="font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--p);margin-bottom:6px">Deklarasi Komitmen Keluarga</div>
                 <p style="font-size:.82rem;color:var(--txt);line-height:1.75;margin:0">
                   Saya berkomitmen sebagai bagian dari keluarga Indonesia untuk mendukung
-                  <strong>Tujuan Pembangunan Berkelanjutan (SDGs)</strong> - dengan membangun
+                  <strong>Tujuan Pembangunan Berkelanjutan (SDGs)</strong> dengan membangun
                   keluarga yang sehat, berpendidikan, bermartabat, dan berkontribusi nyata
-                  pada kesejahteraan masyarakat bersama, sesuai nilai Islam
-                  yang <em>rahmatan lil 'alamin</em>.
-                </p>
-                <p style="font-size:.76rem;color:var(--muted);margin-top:8px;font-family:var(--fs);font-style:italic">
-                  "Dan jadilah kamu tolong-menolong dalam kebaikan dan takwa." - QS. Al-Maidah: 2
+                  pada kesejahteraan masyarakat bersama.
                 </p>
               </div>
             </div>
@@ -678,23 +704,23 @@ function openSubFitur(id){
     const nama    = sessionStorage.getItem('sdg_nama')    || '-';
     const kota    = sessionStorage.getItem('sdg_kota')    || '-';
     const tanggal = sessionStorage.getItem('sdg_tanggal') || '-';
-    const signed  = sessionStorage.getItem('sdg_signed')==='1';
+    const signed = sessionStorage.getItem('sdg_signed')==='1';
     // SDGs yang dipilih
-    const sdgMap  = {1:'#1 Tanpa Kemiskinan',3:'#3 Kesehatan',4:'#4 Pendidikan',10:'#10 Kesetaraan',16:'#16 Perdamaian'};
-    const sdgIco  = {1:'fa-hand-holding-dollar',3:'fa-heart-pulse',4:'fa-graduation-cap',10:'fa-people-roof',16:'fa-scale-balanced'};
-    const sdgClr  = {1:'#E8703A',3:'#2E9B6E',4:'#C8963E',10:'#3A7BD5',16:'#7B5EA7'};
-    const sdgBg   = {1:'#FFF0E8',3:'#E8F4EF',4:'#FBF0DC',10:'#EBF3FF',16:'#EEE8FF'};
+    const sdgMap = {1:'#1 Tanpa Kemiskinan',3:'#3 Kesehatan',4:'#4 Pendidikan',10:'#10 Kesetaraan',16:'#16 Perdamaian'};
+    const sdgIco = {1:'fa-hand-holding-dollar',3:'fa-heart-pulse',4:'fa-graduation-cap',10:'fa-people-roof',16:'fa-scale-balanced'};
+    const sdgClr = {1:'#E8703A',3:'#2E9B6E',4:'#C8963E',10:'#3A7BD5',16:'#7B5EA7'};
+    const sdgBg = {1:'#FFF0E8',3:'#E8F4EF',4:'#FBF0DC',10:'#EBF3FF',16:'#EEE8FF'};
     const sdgList = [1,3,4,10,16].filter(n=>sessionStorage.getItem('sdg_sdg'+n)==='1');
 
     // Hitung aktivitas dari kalkulator nikah & roadmap
-    const ckTotal  = (()=>{
+    const ckTotal = (()=>{
       const ids=['ck-lamaran','ck-mahar','ck-cincin-nikah','ck-kua','ck-dekor-akad','ck-gedung','ck-catering','ck-gaun','ck-foto','ck-tiket'];
       const parseRpLocal = id=>{ const el=document.getElementById(id); if(!el||!el.value) return 0; return parseFloat(el.value.replace(/\./g,'').replace(/[^0-9]/g,''))||0; };
       return ids.reduce((s,id)=>s+parseRpLocal(id),0);
     })();
     const ckFmt    = ckTotal>0 ? 'Rp '+Math.round(ckTotal).toLocaleString('id-ID') : null;
     const rmChecked = document.querySelectorAll('#rmTab-timeline input[type=checkbox]:checked').length;
-    const rmTotal   = document.querySelectorAll('#rmTab-timeline input[type=checkbox]').length;
+    const rmTotal = document.querySelectorAll('#rmTab-timeline input[type=checkbox]').length;
 
     /* - Computed values for sub-panel - */
     const rpInitials=nama.split(' ').filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join('')||'?';
@@ -788,6 +814,106 @@ function openSubFitur(id){
         <i class="fa-solid fa-pen-nib"></i> Perbarui Komitmen SDGs
       </button>
       `}
+    `;
+
+  } else if(id==='kredit-cicilan'){
+    document.getElementById('sfBody').innerHTML = `
+      <style>
+        .kc-toggle-btn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 16px;background:var(--card);border:1.5px solid var(--border);border-radius:var(--r-lg);cursor:pointer;font-family:var(--ff);transition:var(--tr);box-shadow:var(--sh-sm);margin-bottom:0}
+        .kc-toggle-btn:hover{border-color:var(--p);background:var(--bg-alt)}
+        .kc-toggle-ico{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0}
+        .kc-wrap{overflow:hidden}
+        .kc-inner-card{background:var(--card);border:1.5px solid var(--border);border-top:none;border-radius:0 0 var(--r-xl) var(--r-xl);margin-bottom:16px;overflow:hidden}
+        .kc-section{padding:16px 18px;border-bottom:1px solid var(--border)}
+        .kc-section:last-child{border-bottom:none}
+        .kc-section-title{display:flex;align-items:center;gap:8px;font-size:.82rem;font-weight:800;color:var(--txt);margin-bottom:8px}
+        .kc-table{width:100%;border-collapse:collapse;font-size:.78rem}
+        .kc-table th{background:var(--bg-alt);color:var(--muted);font-weight:700;padding:7px 12px;text-align:left;font-size:.72rem;letter-spacing:.03em}
+        .kc-table td{padding:7px 12px;border-top:1px solid var(--border);color:var(--txt)}
+        .kc-table tr:last-child td{font-weight:700}
+        .kc-kredit-table td:nth-child(3){color:var(--muted);font-size:.72rem}
+        .kc-kredit-table td:last-child{color:var(--txt);font-weight:500;text-align:left;font-size:.75rem}
+        .kc-kredit-table tr:last-child td{color:#B91C1C;font-weight:700}
+        .kc-kredit-table tr:last-child td:last-child{color:#B91C1C}
+        .kc-dampak{display:flex;flex-direction:column;gap:7px;margin-top:10px}
+        .kc-dampak-item{display:flex;align-items:flex-start;gap:9px;font-size:.78rem;color:var(--txt);line-height:1.5}
+        .kc-dampak-item i{margin-top:2px;flex-shrink:0}
+        .kc-tips{background:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px;padding:11px 14px;font-size:.78rem;color:#166534;display:flex;align-items:flex-start;gap:9px;margin-top:14px;line-height:1.6}
+        @media(max-width:480px){.kc-table th,.kc-table td{padding:6px 8px;font-size:.72rem}}
+      </style>
+
+      <!-- ① BATAS AMAN CICILAN OJK -->
+      <button class="kc-toggle-btn" id="kcBatasBtn" onclick="kcToggle('kcBatasWrap','kcBatasChevron','kcBatasBtn')" style="border-radius:var(--r-lg) var(--r-lg) 0 0;border-bottom:none;margin-bottom:0">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="kc-toggle-ico" style="background:#FFF7E6;color:#C8963E"><i class="fa-solid fa-shield-halved"></i></div>
+          <div style="text-align:left">
+            <div style="font-size:.87rem;font-weight:800;color:var(--txt)">Batas Aman Cicilan OJK</div>
+            <div style="font-size:.71rem;color:var(--muted);margin-top:1px">Maksimal 30% dari penghasilan bulanan</div>
+          </div>
+        </div>
+        <i class="fa-solid fa-chevron-down" id="kcBatasChevron" style="font-size:.72rem;color:var(--muted);transform:rotate(180deg);transition:transform .25s ease"></i>
+      </button>
+      <div id="kcBatasWrap" class="kc-wrap">
+        <div class="kc-inner-card">
+          <div class="kc-section">
+            <p style="font-size:.82rem;color:var(--txt);line-height:1.75;margin-bottom:14px">OJK menganjurkan agar seluruh cicilan yang dibayar setiap bulan sebaiknya tidak melebihi <strong>30% penghasilan</strong>. Berikut tabel referensinya:</p>
+            <table class="kc-table" style="margin-bottom:14px">
+              <thead><tr><th>Penghasilan/bulan</th><th style="text-align:right">Maks. total cicilan</th></tr></thead>
+              <tbody>
+                <tr><td>Rp 3.000.000</td><td style="text-align:right;color:#C8963E;font-weight:700">Rp 900.000</td></tr>
+                <tr><td>Rp 5.000.000</td><td style="text-align:right;color:#C8963E;font-weight:700">Rp 1.500.000</td></tr>
+                <tr><td>Rp 10.000.000</td><td style="text-align:right;color:#C8963E;font-weight:700">Rp 3.000.000</td></tr>
+              </tbody>
+            </table>
+            <div style="background:var(--gold-pale);border:1px solid rgba(200,150,62,.25);border-radius:var(--r-sm);padding:11px 14px;font-size:.78rem;color:var(--txt);line-height:1.65;margin-bottom:10px">
+              <strong style="color:var(--gold)">📐 Rumus:</strong> Maks. cicilan = <strong>30% × penghasilan bulanan</strong>
+            </div>
+            <div style="background:#F0F9FF;border:1px solid #BAE6FD;border-radius:var(--r-sm);padding:11px 14px;font-size:.76rem;color:#0369A1;line-height:1.65">
+              <i class="fa-solid fa-circle-info" style="margin-right:5px"></i><strong>Catatan:</strong> Angka 30% ini merupakan anjuran literasi/kemampuan keuangan OJK, bukan berarti ada satu aturan OJK yang secara umum melarang seseorang memiliki cicilan di atas 30%.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ② KREDIT MACET -->
+      <button class="kc-toggle-btn" id="kcMacetBtn" onclick="kcToggle('kcMacetWrap','kcMacetChevron','kcMacetBtn')" style="margin-top:12px;border-radius:var(--r-lg) var(--r-lg) 0 0;border-bottom:none">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="kc-toggle-ico" style="background:#FEF2F2;color:#B91C1C"><i class="fa-solid fa-triangle-exclamation"></i></div>
+          <div style="text-align:left">
+            <div style="font-size:.87rem;font-weight:800;color:var(--txt)">Kredit Macet: Dampak &amp; Pencegahan</div>
+            <div style="font-size:.71rem;color:var(--muted);margin-top:1px">Pahami risiko sebelum mengajukan cicilan apapun</div>
+          </div>
+        </div>
+        <i class="fa-solid fa-chevron-down" id="kcMacetChevron" style="font-size:.72rem;color:var(--muted);transform:rotate(180deg);transition:transform .25s ease"></i>
+      </button>
+      <div id="kcMacetWrap" class="kc-wrap">
+        <div class="kc-inner-card">
+          <div class="kc-section">
+            <table class="kc-table kc-kredit-table" style="margin-bottom:16px">
+              <thead><tr><th>Skor</th><th>Status</th><th>Telat Bayar</th><th>Akibat</th></tr></thead>
+              <tbody>
+                <tr><td style="font-weight:700;color:var(--p)">Kol-1</td><td>Lancar</td><td>0 hari</td><td>Bebas ajukan pinjaman apapun</td></tr>
+                <tr><td style="font-weight:700;color:#F59E0B">Kol-2</td><td>Perhatian Khusus</td><td>1-90 hari</td><td>Mulai diawasi bank</td></tr>
+                <tr><td style="font-weight:700;color:#EA580C">Kol-3</td><td>Kurang Lancar</td><td>91-120 hari</td><td>Pengajuan kredit mulai ditolak</td></tr>
+                <tr><td style="font-weight:700;color:#DC2626">Kol-4</td><td>Diragukan</td><td>121-180 hari</td><td>Hampir semua bank menolak</td></tr>
+                <tr><td style="font-weight:700">Kol-5</td><td>Macet</td><td>&gt;180 hari</td><td>Blacklist total</td></tr>
+              </tbody>
+            </table>
+            <div style="font-size:.8rem;font-weight:700;color:#B91C1C;margin-bottom:8px"><i class="fa-solid fa-circle-xmark"></i> Bila sudah Kol-5:</div>
+            <div class="kc-dampak">
+              <div class="kc-dampak-item"><i class="fa-solid fa-xmark-circle" style="color:#B91C1C"></i><span>Semua pengajuan pinjaman ditolak bank &amp; lembaga keuangan</span></div>
+              <div class="kc-dampak-item"><i class="fa-solid fa-arrow-trend-up" style="color:#EA580C"></i><span>Bunga pinjaman masa depan lebih tinggi karena dianggap berisiko</span></div>
+              <div class="kc-dampak-item"><i class="fa-solid fa-house-circle-xmark" style="color:#B91C1C"></i><span>Aset jaminan (rumah/kendaraan) bisa disita dan dilelang</span></div>
+              <div class="kc-dampak-item"><i class="fa-solid fa-clock" style="color:#6B7280"></i><span>Catatan tidak langsung hilang meski sudah lunas tergantung kebijakan bank</span></div>
+              <div class="kc-dampak-item"><i class="fa-solid fa-heart-crack" style="color:#B91C1C"></i><span>Tekanan finansial akibat kredit macet memicu konflik rumah tangga</span></div>
+            </div>
+            <div class="kc-tips">
+              <i class="fa-solid fa-lightbulb" style="margin-top:1px;flex-shrink:0"></i>
+              <span><strong>Tips pencegahan:</strong> Selalu prioritaskan pos cicilan saat menerima gaji, dan bayar tagihan tepat waktu setiap bulannya.</span>
+            </div>
+          </div>
+        </div>
+      </div>
     `;
 
   } else if(id==='modul-edukasi'){
@@ -887,7 +1013,7 @@ function openYoutubeFullscreen(videoId){
     closeBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
     closeBtn.style.cssText = 'position:absolute;top:16px;right:16px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;border:none;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:background .2s;z-index:2';
     closeBtn.onmouseover = ()=>closeBtn.style.background='rgba(255,255,255,.3)';
-    closeBtn.onmouseout  = ()=>closeBtn.style.background='rgba(255,255,255,.15)';
+    closeBtn.onmouseout = ()=>closeBtn.style.background='rgba(255,255,255,.15)';
     closeBtn.onclick = (e)=>{ e.stopPropagation(); closeYoutubeFullscreen(); };
 
     // Live badge
@@ -944,20 +1070,29 @@ function closeYoutubeFullscreen(){
 /* ============================================
    MODUL EDUKASI READER
 ============================================ */
-function openEduReader(){
+function openEduReader(fileId, title){
   const ov = document.getElementById('eduReaderOv');
   const frame = document.getElementById('eduReaderFrame');
+  const titleEl = document.getElementById('eduReaderTitle');
   if(!ov || !frame) return;
-  // Lazy-load iframe saat dibuka
-  if(!frame.src || frame.src === window.location.href){
-    frame.src = 'https://drive.google.com/file/d/1Pc6zPsvfpZWbOE-_0USqZzbeFwVhbv6z/preview';
+  // Selalu set src berdasarkan fileId yang dipilih
+  if(fileId){
+    frame.src = 'https://drive.google.com/file/d/'+fileId+'/preview';
+  } else if(!frame.src || frame.src === window.location.href){
+    frame.src = 'https://drive.google.com/file/d/1z_wwbnYdHRFvooAIk_uZTl4YR1XCgBDT/preview';
   }
+  if(titleEl) titleEl.textContent = title ? title.replace(/&amp;/g,'&') : 'Modul Edukasi Interaktif';
+  var ld=document.getElementById('eduReaderLoading');if(ld)ld.style.display='flex';
+  frame.style.pointerEvents = 'auto';
   ov.classList.add('edu-open');
   document.body.style.overflow = 'hidden';
 }
 function closeEduReader(){
   const ov = document.getElementById('eduReaderOv');
+  const frame = document.getElementById('eduReaderFrame');
   if(ov) ov.classList.remove('edu-open');
+  if(frame){ frame.src = ''; frame.style.pointerEvents = 'none'; }
+  var ld=document.getElementById('eduReaderLoading');if(ld)ld.style.display='none';
   const anyPanelOpen =
     document.getElementById('detailPanel')?.classList.contains('open') ||
     document.getElementById('subFiturPanel')?.classList.contains('open') ||
@@ -1039,6 +1174,30 @@ function rmUpdateNavUI(){
     document.getElementById('userMenuName').textContent = rmCurrentUser.nama;
     document.getElementById('userMenuEmail').textContent = rmCurrentUser.email;
   }
+
+  // STATE-01: Update semua CTA daftar sesuai status login
+  document.querySelectorAll('[data-cta-daftar]').forEach(function(btn){
+    if(rmCurrentUser){
+      btn.innerHTML='<i class="fa-solid fa-gauge"></i> Lanjutkan Perencanaan';
+      btn.onclick=function(){ goPage('simulasi-biaya-nikah'); };
+    } else {
+      // Kembalikan ke teks default sesuai class tombol
+      if(btn.classList.contains('btn-gold')){
+        var txt=btn.closest('[id^="page-beranda"]') ? 'Daftar Gratis Sekarang' : (btn.closest('[id^="page-cara-kerja"]') ? 'Daftar Sekarang' : 'Daftar Gratis');
+        btn.innerHTML='<i class="fa-solid fa-rocket"></i> '+txt;
+      } else {
+        btn.innerHTML='<i class="fa-solid fa-rocket"></i> Daftar Gratis - Mulai Sekarang';
+      }
+      btn.onclick=function(){ openAuth('daftar'); };
+    }
+  });
+  // Update teks deskripsi di halaman Fitur
+  var ctaTeks=document.getElementById('ctaFiturTeks');
+  if(ctaTeks){
+    ctaTeks.textContent = rmCurrentUser
+      ? 'Selamat datang kembali! Lanjutkan perencanaan keuangan keluarga Anda.'
+      : 'Belum punya akun? Daftar gratis dan akses semua fitur sekarang.';
+  }
 }
 
 function toggleUserMenu(e){
@@ -1047,6 +1206,16 @@ function toggleUserMenu(e){
   drop.style.display = drop.style.display==='block' ? 'none' : 'block';
 }
 document.addEventListener('click', ()=>{ const d=document.getElementById('userMenuDrop'); if(d) d.style.display='none'; });
+
+// NAV-01: Handle tombol Back/Forward browser
+window.addEventListener('popstate', function(e){
+  var page = (e.state && e.state.rmPage) ? e.state.rmPage : 'beranda';
+  // Panggil goPage tanpa pushState lagi (history sudah dikelola browser)
+  var saved = history.state;
+  goPage(page);
+  // Kembalikan state yang baru saja di-push oleh goPage supaya tidak dobel
+  history.replaceState(saved, '', '#'+page);
+});
 
 // - openAuth (entry point) -
 let _authGateMode = false; // true when triggered by feature gate
@@ -1091,6 +1260,13 @@ function closeAuth(){
   document.body.style.overflow='';
   document.getElementById('navbar').style.display='';
   _authGateMode = false;
+  // Reset semua field & pesan error saat modal ditutup (fix SU-01 & LOG-05)
+  ['regNama','regEmail','regPass','loginEmail','loginPass'].forEach(function(id){
+    var el=document.getElementById(id); if(el) el.value='';
+  });
+  ['regErr','loginErr'].forEach(function(id){
+    var el=document.getElementById(id); if(el){el.style.display='none';el.innerHTML='';}
+  });
 }
 function closeAuthOutside(e){ if(e.target===document.getElementById('authPanel')) closeAuth(); }
 
@@ -1102,13 +1278,14 @@ function showAuthErr(id, msg){
 
 // - Register -
 async function doRegister(){
-  const nama  = document.getElementById('regNama').value.trim();
+  const nama = document.getElementById('regNama').value.trim();
   const email = document.getElementById('regEmail').value.trim().toLowerCase();
-  const pass  = document.getElementById('regPass').value;
+  const pass = document.getElementById('regPass').value;
 
   if(!nama){ showAuthErr('regErr','Nama lengkap wajib diisi.'); return; }
   if(nama.length>150){ showAuthErr('regErr','Nama terlalu panjang (maks 150 karakter).'); return; }
-  if(!email||!RM_EMAIL_REGEX.test(email)){ showAuthErr('regErr','Format email tidak valid.'); return; }
+  if(!email){ showAuthErr('regErr','Email wajib diisi.'); document.getElementById('regEmail').focus(); return; }
+  if(!RM_EMAIL_REGEX.test(email)){ showAuthErr('regErr','Format email tidak valid.'); document.getElementById('regEmail').focus(); return; }
   if(pass.length<8){ showAuthErr('regErr','Password minimal 8 karakter.'); return; }
   if(!/[a-zA-Z]/.test(pass) || !/[0-9]/.test(pass)){ showAuthErr('regErr','Password harus mengandung huruf dan angka.'); return; }
 
@@ -1145,9 +1322,10 @@ async function doLogin(){
   }
 
   const email = document.getElementById('loginEmail').value.trim().toLowerCase();
-  const pass  = document.getElementById('loginPass').value;
+  const pass = document.getElementById('loginPass').value;
 
-  if(!email||!RM_EMAIL_REGEX.test(email)){ showAuthErr('loginErr','Masukkan email yang valid.'); return; }
+  if(!email){ showAuthErr('loginErr','Email wajib diisi.'); document.getElementById('loginEmail').focus(); return; }
+  if(!RM_EMAIL_REGEX.test(email)){ showAuthErr('loginErr','Format email tidak valid.'); document.getElementById('loginEmail').focus(); return; }
   if(!pass){ showAuthErr('loginErr','Password wajib diisi.'); return; }
 
   const { data, error } = await _sb.auth.signInWithPassword({ email, password: pass });
@@ -1179,13 +1357,30 @@ async function doLogin(){
 }
 
 // - Logout -
+// _clearSessionData: hapus seluruh data sesi browser (fix LOGOUT-02)
+function _clearSessionData(){
+  ['sdg_nama','sdg_kota','sdg_signed','sdg_tanggal',
+   'sdg_sdg1','sdg_sdg3','sdg_sdg4','sdg_sdg10','sdg_sdg16'
+  ].forEach(function(k){ sessionStorage.removeItem(k); });
+  for(var i=0;i<50;i++){
+    sessionStorage.removeItem('rm10_'+i);
+    sessionStorage.removeItem('rm10p_'+i);
+  }
+}
+
 async function doLogout(){
   await _sb.auth.signOut();
+  _clearSessionData();
   rmCurrentUser = null;
   _visitedFeatures.clear();
   rmUpdateNavUI();
   document.getElementById('userMenuDrop').style.display='none';
   showToast('Anda telah keluar. Sampai jumpa! 👋');
+}
+
+// NAV-01: Set initial history state saat halaman pertama dibuka
+if(!history.state || !history.state.rmPage){
+  history.replaceState({rmPage:'beranda'}, '', '#beranda');
 }
 
 // - Feature gate check -
@@ -1222,7 +1417,14 @@ async function submitForm(){
   const email=document.getElementById('fEmail').value.trim();
   const topik=document.getElementById('fTopik').value;
   const pesan=document.getElementById('fPesan').value.trim();
-  if(!nama||!email||!pesan){showToast('Harap isi semua field yang wajib diisi (*).','err');return;}
+  // Validasi field wajib dengan visual feedback (fix CON-01)
+  const _fNamaEl=document.getElementById('fNama');
+  const _fEmailEl=document.getElementById('fEmail');
+  const _fPesanEl=document.getElementById('fPesan');
+  function _conMarkErr(el){if(el){el.style.borderColor='#E05252';el.style.outline='2px solid #FECACA';setTimeout(()=>{el.style.borderColor='';el.style.outline='';},2500);}}
+  if(!nama){_conMarkErr(_fNamaEl);if(_fNamaEl)_fNamaEl.focus();showToast('Nama wajib diisi.','err');return;}
+  if(!email){_conMarkErr(_fEmailEl);if(_fEmailEl)_fEmailEl.focus();showToast('Email wajib diisi.','err');return;}
+  if(!pesan){_conMarkErr(_fPesanEl);if(_fPesanEl)_fPesanEl.focus();showToast('Pesan wajib diisi.','err');return;}
   if(!RM_EMAIL_REGEX.test(email)){showToast('Format email tidak valid.','err');return;}
   if(nama.length>150){showToast('Nama terlalu panjang (maks 150 karakter).','err');return;}
   if(pesan.length>2000){showToast('Pesan terlalu panjang (maks 2000 karakter).','err');return;}
@@ -1276,8 +1478,16 @@ function initTurnstile(){
 function toggleFaq(el){
   const item=el.parentElement;
   const isOpen=item.classList.contains('open');
-  document.querySelectorAll('.faq-item.open').forEach(f=>f.classList.remove('open'));
-  if(!isOpen) item.classList.add('open');
+  const openItems=document.querySelectorAll('.faq-item.open');
+  // FAQ-02: sequential - tutup yang lama dulu, baru buka yang baru
+  if(openItems.length && !isOpen){
+    openItems.forEach(f=>f.classList.remove('open'));
+    // Tunggu transisi tutup (~300ms) baru buka yang baru
+    setTimeout(function(){ item.classList.add('open'); }, 300);
+  } else {
+    openItems.forEach(f=>f.classList.remove('open'));
+    if(!isOpen) item.classList.add('open');
+  }
 }
 
 /* ============================================
@@ -1340,16 +1550,19 @@ function selectFeat(idx,el){
   document.getElementById('fsBtn').onclick=()=>openDetail(idx);
 }
 
-// auto-cycle every 5s, pause on hover
+// auto-cycle every 5s, pause on hover atau saat tidak di halaman beranda/fitur
 let featTimer=null, featIdx=0;
 function startFeatCycle(){
+  if(featTimer) return; // jangan double-start
   featTimer=setInterval(()=>{
     featIdx=(featIdx+1)%features.length;
     const items=document.querySelectorAll('.feat-item');
     if(items[featIdx]) selectFeat(featIdx,items[featIdx]);
   },5000);
 }
-function stopFeatCycle(){clearInterval(featTimer);}
+function stopFeatCycle(){
+  if(featTimer){ clearInterval(featTimer); featTimer=null; }
+}
 document.addEventListener('DOMContentLoaded',()=>{
   rmInitSession().then(()=>{
     // Setelah session restored, restore roadmap checklist dari Supabase
@@ -1368,7 +1581,42 @@ document.addEventListener('DOMContentLoaded',()=>{
 ============================================ */
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){closeDetail();closeAuth();closeYoutubeFullscreen();closeEduReader();}
+  // SU-09: Submit modal auth dengan Enter
+  if(e.key==='Enter'){
+    const panel=document.getElementById('authPanel');
+    if(panel && panel.classList.contains('open')){
+      const tab=document.querySelector('.auth-tab-btn.active');
+      if(tab && tab.dataset.tab==='daftar') doRegister();
+      else doLogin();
+    }
+  }
 });
+
+/* ============================================
+   ✨ PAUSE INFINITE ANIMATIONS WHEN OFF-SCREEN
+   Elemen dengan animasi infinite akan di-pause
+   saat keluar dari viewport, resume saat masuk.
+============================================ */
+(function initAnimPause(){
+  // Selector untuk elemen dengan animasi infinite yang berat
+  const animSelectors = [
+    '.float-card',
+    '.hero-orb1','.hero-orb2',
+    '.aurora-blob',
+    '.scroll-hint i',
+    '.scroll-dot',
+    '.hero-cta',
+    '.bcard',
+  ];
+  const animEls = document.querySelectorAll(animSelectors.join(','));
+  if(!animEls.length || !('IntersectionObserver' in window)) return;
+  const pauseObs = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      entry.target.style.animationPlayState = entry.isIntersecting ? 'running' : 'paused';
+    });
+  },{rootMargin:'100px'});
+  animEls.forEach(el=>pauseObs.observe(el));
+})();
 
 /* ============================================
    ✨ SCROLL REVEAL - IntersectionObserver
@@ -1413,7 +1661,7 @@ function animateCounter(el,target,suffix='',duration=1400){
   if(!statParent) return;
   const obs=new IntersectionObserver(entries=>{
     if(entries[0].isIntersecting){
-      animateCounter(statEl,7,'+');
+      animateCounter(statEl,6,'');
       obs.disconnect();
     }
   },{threshold:.5});
@@ -1430,15 +1678,21 @@ function animateCounter(el,target,suffix='',duration=1400){
   const ab1=document.querySelector('.aurora-blob.ab1');
   const ab2=document.querySelector('.aurora-blob.ab2');
   if(!hero||!orb1||!orb2) return;
+  let _pTicking=false;
   hero.addEventListener('mousemove',e=>{
-    const rect=hero.getBoundingClientRect();
-    const x=(e.clientX-rect.left)/rect.width-.5;
-    const y=(e.clientY-rect.top)/rect.height-.5;
-    orb1.style.transform=`translate(${x*24}px,${y*16}px)`;
-    orb2.style.transform=`translate(${-x*18}px,${-y*12}px)`;
-    if(ab1) ab1.style.transform=`translate(${x*32}px,${y*20}px)`;
-    if(ab2) ab2.style.transform=`translate(${-x*28}px,${-y*18}px)`;
-  });
+    if(_pTicking) return; // throttle via rAF agar tidak jalan setiap pixel
+    _pTicking=true;
+    requestAnimationFrame(()=>{
+      const rect=hero.getBoundingClientRect();
+      const x=(e.clientX-rect.left)/rect.width-.5;
+      const y=(e.clientY-rect.top)/rect.height-.5;
+      orb1.style.transform=`translate(${x*24}px,${y*16}px)`;
+      orb2.style.transform=`translate(${-x*18}px,${-y*12}px)`;
+      if(ab1) ab1.style.transform=`translate(${x*32}px,${y*20}px)`;
+      if(ab2) ab2.style.transform=`translate(${-x*28}px,${-y*18}px)`;
+      _pTicking=false;
+    });
+  },{passive:true});
   hero.addEventListener('mouseleave',()=>{
     [orb1,orb2,ab1,ab2].forEach(el=>{if(el)el.style.transform='';});
   });
@@ -1450,6 +1704,16 @@ function animateCounter(el,target,suffix='',duration=1400){
 const origGoPage=window.goPage||function(){};
 window.goPage=function(id){
   origGoPage(id);
+
+  // Hentikan featTimer kalau keluar dari beranda/fitur, nyalakan lagi kalau kembali
+  if(typeof stopFeatCycle === 'function' && typeof startFeatCycle === 'function'){
+    if(id === 'beranda' || id === 'fitur'){
+      startFeatCycle();
+    } else {
+      stopFeatCycle();
+    }
+  }
+
   setTimeout(()=>{
     const newEls=document.querySelectorAll('#page-'+id+' .reveal:not(.in), #page-'+id+' .reveal-l:not(.in), #page-'+id+' .reveal-r:not(.in), #page-'+id+' .reveal-scale:not(.in)');
     const obs=new IntersectionObserver(entries=>{
@@ -1493,7 +1757,7 @@ document.addEventListener('DOMContentLoaded',()=>{
    MAKNA PERNIKAHAN PAGE
 ============================================ */
 const _mkImgDesktop = 'https://lh3.googleusercontent.com/d/1UqSlDCRmFKnJVeLNQpTmBOo1O-CJc1KO';
-const _mkImgMobile  = 'https://lh3.googleusercontent.com/d/15O2XcszLCXy0CMpzfcjRgZK1ByEMXVwK';
+const _mkImgMobile = 'https://lh3.googleusercontent.com/d/15O2XcszLCXy0CMpzfcjRgZK1ByEMXVwK';
 
 function getMaknaImg(){
   return window.innerWidth < 768 ? _mkImgMobile : _mkImgDesktop;
@@ -1510,15 +1774,15 @@ function switchMaknaTab(id){
   // Tab 1 - Syarat Sah Nikah (green)
   const b1=document.getElementById('sfTab1'),i1=document.getElementById('sfTab1Icon'),l1=document.getElementById('sfTab1Label');
   b1.style.borderColor = on1 ? 'var(--p)' : 'var(--border)';
-  b1.style.background  = on1 ? 'rgba(27,107,90,.07)' : 'var(--card)';
-  i1.style.background  = on1 ? 'var(--p)' : 'rgba(27,107,90,.1)';
+  b1.style.background = on1 ? 'rgba(27,107,90,.07)' : 'var(--card)';
+  i1.style.background = on1 ? 'var(--p)' : 'rgba(27,107,90,.1)';
   i1.style.color       = on1 ? '#fff' : 'var(--p)';
   l1.style.color       = on1 ? 'var(--p)' : 'var(--muted)';
   // Tab 2 - Nikah Simpel Urip Apik (gold)
   const b2=document.getElementById('sfTab2'),i2=document.getElementById('sfTab2Icon'),l2=document.getElementById('sfTab2Label');
   b2.style.borderColor = !on1 ? 'var(--gold)' : 'var(--border)';
-  b2.style.background  = !on1 ? 'rgba(200,150,62,.07)' : 'var(--card)';
-  i2.style.background  = !on1 ? 'var(--gold)' : 'rgba(200,150,62,.1)';
+  b2.style.background = !on1 ? 'rgba(200,150,62,.07)' : 'var(--card)';
+  i2.style.background = !on1 ? 'var(--gold)' : 'rgba(200,150,62,.1)';
   i2.style.color       = !on1 ? '#fff' : 'var(--gold)';
   l2.style.color       = !on1 ? 'var(--gold)' : 'var(--muted)';
 }
@@ -1556,21 +1820,21 @@ const _pnActiveColors = [
 ];
 
 const _kuaVsLuarImgDesktop = 'https://lh3.googleusercontent.com/d/1mO6t9bfiIQX8GLmNLnEPzgqGJ5dA9d09';
-const _kuaVsLuarImgMobile  = 'https://lh3.googleusercontent.com/d/1dOtfl9legvJ3a8gtcY5yvxPdV05iZc3B';
+const _kuaVsLuarImgMobile = 'https://lh3.googleusercontent.com/d/1dOtfl9legvJ3a8gtcY5yvxPdV05iZc3B';
 
 function getKuaVsLuarImg(){
   return window.innerWidth < 600 ? _kuaVsLuarImgMobile : _kuaVsLuarImgDesktop;
 }
 
-const _nikahKuaImgMobile  = 'https://lh3.googleusercontent.com/d/1e8PoUzygT5Ubwn0DL4Fpk8yPUcrt2wJc';
+const _nikahKuaImgMobile = 'https://lh3.googleusercontent.com/d/1e8PoUzygT5Ubwn0DL4Fpk8yPUcrt2wJc';
 const _nikahKuaImgDesktop = 'https://lh3.googleusercontent.com/d/1ctggw0eFbXg8uFe58ozyIEfrsUEw08M-';
 
 function getNikahKuaImg(){
   return window.innerWidth < 600 ? _nikahKuaImgMobile : _nikahKuaImgDesktop;
 }
 
-const _cetakKartuImgMobile  = 'https://lh3.googleusercontent.com/d/1hBMHtk6M_vcWgLS_tXuspT9IxvYmyWgR';
-const _cetakKartuImgDesktop = 'https://lh3.googleusercontent.com/d/1o2vob9KPXpVECXVipZeVpYjduq-k4US2';
+const _cetakKartuImgMobile = 'https://lh3.googleusercontent.com/d/10pgbbg-fTe8YYE2sOrjvepGddc480R3g';
+const _cetakKartuImgDesktop = 'https://lh3.googleusercontent.com/d/10pgbbg-fTe8YYE2sOrjvepGddc480R3g';
 
 function getCetakKartuImg(){
   return window.innerWidth < 768 ? _cetakKartuImgMobile : _cetakKartuImgDesktop;
@@ -1589,7 +1853,7 @@ function switchPendaftaranTab(id){
   // set responsive image for Nikah Online tab
   if(id === 'nikah-online'){
     const img = document.getElementById('nikahOnlineImg');
-    const ld  = document.getElementById('nikahOnlineLoading');
+    const ld = document.getElementById('nikahOnlineLoading');
     const wrap = document.getElementById('nikahOnlineWrap');
     if(img && ld){
       ld.style.display = 'flex';
@@ -1597,15 +1861,15 @@ function switchPendaftaranTab(id){
       if(wrap) wrap.style.minHeight = '200px';
       delete img.dataset.tried;
       img.src = window.innerWidth < 768
-        ? 'https://lh3.googleusercontent.com/d/1CDUu5ViaYucp3m91Cs4E-Pr0fBJ3emys'
-        : 'https://lh3.googleusercontent.com/d/1ZVMvGvA4m30qyzLPVQ3oVGxJ_ImxyD4Q';
+        ? 'https://lh3.googleusercontent.com/d/1kEheHcH12oP5eR4SgnIFW_LCfAu8ZZiU'
+        : 'https://lh3.googleusercontent.com/d/1XLZXRiBvVqo993xbgh_dBzwwNDOyu7_i';
     }
   }
 
   // set responsive image for Nikah KUA tab
   if(id === 'nikah-kua'){
-    const img  = document.getElementById('nikahKuaImg');
-    const ld   = document.getElementById('nikahKuaLoading');
+    const img = document.getElementById('nikahKuaImg');
+    const ld = document.getElementById('nikahKuaLoading');
     const wrap = document.getElementById('nikahKuaWrap');
     if(img && ld){
       ld.style.display = 'flex';
@@ -1619,7 +1883,7 @@ function switchPendaftaranTab(id){
   // set responsive image for KUA vs Di Luar tab
   if(id === 'nikah-kua-vs-luar'){
     const img = document.getElementById('kuaVsLuarImg');
-    const ld  = document.getElementById('kuaVsLuarLoading');
+    const ld = document.getElementById('kuaVsLuarLoading');
     const wrap = document.getElementById('kuaVsLuarWrap');
     if(img && ld){
       // show loading, hide image
@@ -1634,8 +1898,8 @@ function switchPendaftaranTab(id){
 
   // set responsive image for Cetak Kartu Nikah tab
   if(id === 'cetak-kartu-nikah'){
-    const img  = document.getElementById('cetakKartuImg');
-    const ld   = document.getElementById('cetakKartuLoading');
+    const img = document.getElementById('cetakKartuImg');
+    const ld = document.getElementById('cetakKartuLoading');
     const wrap = document.getElementById('cetakKartuWrap');
     if(img && ld){
       ld.style.display = 'flex';
@@ -1649,26 +1913,26 @@ function switchPendaftaranTab(id){
   // update tab card styles
   const idx = _pnContentIds.indexOf(id);
   const _pnCardColors = [
-    {border:'var(--gold)', bg:'rgba(200,150,62,.07)', iconBg:'var(--gold)',  iconBgOff:'rgba(200,150,62,.1)', iconColor:'var(--gold)'},
-    {border:'var(--p)',    bg:'rgba(27,107,90,.07)',  iconBg:'var(--p)',     iconBgOff:'rgba(27,107,90,.1)',  iconColor:'var(--p)'},
+    {border:'var(--gold)', bg:'rgba(200,150,62,.07)', iconBg:'var(--gold)', iconBgOff:'rgba(200,150,62,.1)', iconColor:'var(--gold)'},
+    {border:'var(--p)',    bg:'rgba(27,107,90,.07)', iconBg:'var(--p)',     iconBgOff:'rgba(27,107,90,.1)', iconColor:'var(--p)'},
     {border:'#3A7BD5',    bg:'rgba(58,123,213,.07)', iconBg:'#3A7BD5',      iconBgOff:'rgba(58,123,213,.1)', iconColor:'#3A7BD5'},
     {border:'#7B5EA7',    bg:'rgba(123,94,167,.07)', iconBg:'#7B5EA7',      iconBgOff:'rgba(123,94,167,.1)', iconColor:'#7B5EA7'},
   ];
   _pnTabIds.forEach((tid, i) => {
-    const btn   = document.getElementById(tid);
-    const icon  = document.getElementById(tid+'Icon');
+    const btn = document.getElementById(tid);
+    const icon = document.getElementById(tid+'Icon');
     const label = document.getElementById(tid+'Label');
     if(!btn) return;
     const c = _pnCardColors[i];
     if(i === idx){
-      btn.style.borderColor   = c.border;
+      btn.style.borderColor = c.border;
       btn.style.background    = c.bg;
-      if(icon){  icon.style.background=c.iconBg;    icon.style.color='#fff'; }
+      if(icon){ icon.style.background=c.iconBg;    icon.style.color='#fff'; }
       if(label){ label.style.color=c.border; }
     } else {
-      btn.style.borderColor   = 'var(--border)';
+      btn.style.borderColor = 'var(--border)';
       btn.style.background    = 'var(--card)';
-      if(icon){  icon.style.background=c.iconBgOff; icon.style.color=c.iconColor; }
+      if(icon){ icon.style.background=c.iconBgOff; icon.style.color=c.iconColor; }
       if(label){ label.style.color='var(--muted)'; }
     }
   });
@@ -1682,15 +1946,15 @@ window.goPage = function(id){
     switchPendaftaranTab('nikah-online');
     // load gambar nikah online
     const img = document.getElementById('nikahOnlineImg');
-    const ld  = document.getElementById('nikahOnlineLoading');
+    const ld = document.getElementById('nikahOnlineLoading');
     const wrap = document.getElementById('nikahOnlineWrap');
     if(img && ld && !img.src){
       ld.style.display = 'flex';
       img.style.opacity = '0';
       if(wrap) wrap.style.minHeight = '200px';
       img.src = window.innerWidth < 768
-        ? 'https://lh3.googleusercontent.com/d/1CDUu5ViaYucp3m91Cs4E-Pr0fBJ3emys'
-        : 'https://lh3.googleusercontent.com/d/1ZVMvGvA4m30qyzLPVQ3oVGxJ_ImxyD4Q';
+        ? 'https://lh3.googleusercontent.com/d/1kEheHcH12oP5eR4SgnIFW_LCfAu8ZZiU'
+        : 'https://lh3.googleusercontent.com/d/1XLZXRiBvVqo993xbgh_dBzwwNDOyu7_i';
     }
     document.getElementById('navbar').style.display='';
   }
@@ -1705,11 +1969,11 @@ const _sbTabIds = ['sbTab1','sbTab2'];
 const _sbContentIds = ['nikah-mewah-vs-simpel','kalkulator-nikah'];
 const _sbCardColors = [
   {border:'#3A7BD5', bg:'rgba(58,123,213,.07)', iconBg:'#3A7BD5', iconBgOff:'rgba(58,123,213,.1)', iconColor:'#3A7BD5'},
-  {border:'#E8703A', bg:'rgba(232,112,58,.07)',  iconBg:'#E8703A', iconBgOff:'rgba(232,112,58,.1)', iconColor:'#E8703A'},
+  {border:'#E8703A', bg:'rgba(232,112,58,.07)', iconBg:'#E8703A', iconBgOff:'rgba(232,112,58,.1)', iconColor:'#E8703A'},
 ];
 
 // Image URLs for nikah mewah vs simpel
-const _sbImg1Mobile  = 'https://lh3.googleusercontent.com/d/1dOtfl9legvJ3a8gtcY5yvxPdV05iZc3B';
+const _sbImg1Mobile = 'https://lh3.googleusercontent.com/d/1dOtfl9legvJ3a8gtcY5yvxPdV05iZc3B';
 const _sbImg1Desktop = 'https://lh3.googleusercontent.com/d/1mO6t9bfiIQX8GLmNLnEPzgqGJ5dA9d09';
 
 function switchSimulasiTab(id){
@@ -1727,20 +1991,20 @@ function switchSimulasiTab(id){
   // update tab card styles
   const idx = _sbContentIds.indexOf(id);
   _sbTabIds.forEach((tid, i) => {
-    const btn   = document.getElementById(tid);
-    const icon  = document.getElementById(tid+'Icon');
+    const btn = document.getElementById(tid);
+    const icon = document.getElementById(tid+'Icon');
     const label = document.getElementById(tid+'Label');
     if(!btn) return;
     const c = _sbCardColors[i];
     if(i === idx){
       btn.style.borderColor = c.border;
-      btn.style.background  = c.bg;
-      if(icon){  icon.style.background = c.iconBg;    icon.style.color = '#fff'; }
+      btn.style.background = c.bg;
+      if(icon){ icon.style.background = c.iconBg;    icon.style.color = '#fff'; }
       if(label){ label.style.color = c.border; }
     } else {
       btn.style.borderColor = 'var(--border)';
-      btn.style.background  = 'var(--card)';
-      if(icon){  icon.style.background = c.iconBgOff; icon.style.color = c.iconColor; }
+      btn.style.background = 'var(--card)';
+      if(icon){ icon.style.background = c.iconBgOff; icon.style.color = c.iconColor; }
       if(label){ label.style.color = 'var(--muted)'; }
     }
   });
@@ -1760,7 +2024,7 @@ window.goPage = function(id){
 /* - KALKULATOR NIKAH: toggle section - */
 function toggleCkSection(key){
   const body = document.getElementById('body-'+key);
-  const tog  = document.getElementById('tog-'+key);
+  const tog = document.getElementById('tog-'+key);
   if(!body) return;
   const open = body.style.display !== 'none';
   body.style.display = open ? 'none' : 'grid';
@@ -1769,7 +2033,7 @@ function toggleCkSection(key){
 
 function toggleProjSection(key){
   const body = document.getElementById('body-'+key);
-  const tog  = document.getElementById('tog-'+key);
+  const tog = document.getElementById('tog-'+key);
   if(!body) return;
   const open = body.style.display !== 'none';
   body.style.display = open ? 'none' : 'flex';
@@ -1784,13 +2048,13 @@ function parseRp(id){
   return parseFloat(raw)||0;
 }
 function fmtRp(el){
-  const pos   = el.selectionStart;
-  const raw   = el.value.replace(/\./g,'').replace(/[^0-9]/g,'');
-  const prev  = el.value.replace(/\./g,'').replace(/[^0-9]/g,'');
+  const pos = el.selectionStart;
+  const raw = el.value.replace(/\./g,'').replace(/[^0-9]/g,'');
+  const prev = el.value.replace(/\./g,'').replace(/[^0-9]/g,'');
   if(!raw){ el.value=''; return; }
   const dotsBefore = (el.value.slice(0,pos).match(/\./g)||[]).length;
-  const formatted  = Number(raw).toLocaleString('id-ID');
-  const dotsAfter  = (formatted.slice(0,pos+(formatted.length-el.value.length)).match(/\./g)||[]).length;
+  const formatted = Number(raw).toLocaleString('id-ID');
+  const dotsAfter = (formatted.slice(0,pos+(formatted.length-el.value.length)).match(/\./g)||[]).length;
   el.value = formatted;
   // restore cursor
   try{
@@ -1805,11 +2069,11 @@ function hitungTotal(){
 
   // grup biaya
   const grp = {
-    lamaran:   ['ck-lamaran','ck-cincin-lamaran','ck-seserahan-lamaran','ck-uang-dapur','ck-siraman','ck-midodareni'],
+    lamaran: ['ck-lamaran','ck-cincin-lamaran','ck-seserahan-lamaran','ck-uang-dapur','ck-siraman','ck-midodareni'],
     mahar:     ['ck-mahar','ck-cincin-nikah','ck-seserahan-nikah','ck-perhiasan'],
     admin:     ['ck-kua','ck-surat','ck-buku','ck-saksi'],
     akad:      ['ck-dekor-akad','ck-konsumsi-akad','ck-sound-akad','ck-qori'],
-    resepsi:   ['ck-gedung','ck-tenda','ck-catering','ck-dekor-resepsi','ck-sound-resepsi','ck-hiburan','ck-souvenir','ck-undangan'],
+    resepsi: ['ck-gedung','ck-tenda','ck-catering','ck-dekor-resepsi','ck-sound-resepsi','ck-hiburan','ck-souvenir','ck-undangan'],
     busana:    ['ck-gaun','ck-jas','ck-makeup','ck-seragam','ck-aksesori','ck-perawatan'],
     dok:       ['ck-foto','ck-video','ck-prewed','ck-album'],
     transport: ['ck-mobil','ck-shuttle','ck-hotel','ck-akom-keluarga'],
@@ -1844,17 +2108,17 @@ function hitungTotal(){
   // perencanaan
   const tabungan = rp('ck-tabungan');
   const gaji     = rp('ck-gaji');
-  const persen   = rp('ck-persen') || 0;
+  const persen = rp('ck-persen') || 0;
   const tglEl    = document.getElementById('ck-tgl');
   const tgl      = tglEl ? tglEl.value : '';
 
   // hitung bulan tersisa
   let bulanSisa = 0;
   if(tgl){
-    const now   = new Date();
+    const now = new Date();
     const target= new Date(tgl);
-    const diff  = (target.getFullYear() - now.getFullYear())*12 + (target.getMonth() - now.getMonth());
-    bulanSisa   = Math.max(0, diff);
+    const diff = (target.getFullYear() - now.getFullYear())*12 + (target.getMonth() - now.getMonth());
+    bulanSisa = Math.max(0, diff);
   }
 
   // proyeksi tabungan bisa dikumpul
@@ -1864,13 +2128,13 @@ function hitungTotal(){
 
   // update result cells
   const set = (id, val) => { const el=document.getElementById(id); if(el) el.textContent = val; };
-  const cls = (id, c)   => { const el=document.getElementById(id); if(el){ el.className='val'; el.classList.add(c||''); }};
+  const cls = (id, c) => { const el=document.getElementById(id); if(el){ el.className='val'; el.classList.add(c||''); }};
 
   if(tabungan > 0 || gaji > 0 || tgl){
-    set('ck-r-tabungan',   tabungan > 0 ? 'Rp '+tabungan.toLocaleString('id-ID') : '-');
+    set('ck-r-tabungan', tabungan > 0 ? 'Rp '+tabungan.toLocaleString('id-ID') : '-');
     set('ck-r-bulan',      tgl ? bulanSisa+' bulan' : '-');
-    set('ck-r-proyeksi',   tgl && (gaji > 0 || tabungan > 0) ? 'Rp '+proyeksi.toLocaleString('id-ID') : '-');
-    cls('ck-r-proyeksi',   kurang <= 0 ? 'ok' : 'warn');
+    set('ck-r-proyeksi', tgl && (gaji > 0 || tabungan > 0) ? 'Rp '+proyeksi.toLocaleString('id-ID') : '-');
+    cls('ck-r-proyeksi', kurang <= 0 ? 'ok' : 'warn');
 
     if(tabunganPerBulan > 0 && total > 0 && bulanSisa > 0){
       const needed = Math.max(0, Math.ceil((total - tabungan) / bulanSisa));
@@ -1886,13 +2150,13 @@ function hitungTotal(){
 
   // progress bar
   const progWrap = document.getElementById('ck-prog-wrap');
-  const progBar  = document.getElementById('ck-prog-bar');
-  const progPct  = document.getElementById('ck-prog-pct');
+  const progBar = document.getElementById('ck-prog-bar');
+  const progPct = document.getElementById('ck-prog-pct');
   if(total > 0 && (tabungan > 0 || proyeksi > 0)){
     const pct = Math.min(100, Math.round(proyeksi / total * 100));
     if(progWrap) progWrap.style.display = 'block';
-    if(progBar)  progBar.style.width    = pct+'%';
-    if(progPct)  progPct.textContent    = pct+'%';
+    if(progBar) progBar.style.width    = pct+'%';
+    if(progPct) progPct.textContent    = pct+'%';
   } else {
     if(progWrap) progWrap.style.display = 'none';
   }
@@ -1905,18 +2169,18 @@ function hitungTotal(){
       hutangCard.className     = 'hutang-card';
       document.getElementById('ck-hutang-icon').style.color = '#E05252';
       document.getElementById('ck-hutang-title').textContent = 'Estimasi Hutang yang Dibutuhkan';
-      document.getElementById('ck-hutang-sub').textContent   = 'Kekurangan setelah proyeksi tabungan';
+      document.getElementById('ck-hutang-sub').textContent = 'Kekurangan setelah proyeksi tabungan';
       document.getElementById('ck-hutang-nominal').style.color = '#E05252';
-      document.getElementById('ck-hutang-nominal').textContent  = 'Rp '+kurang.toLocaleString('id-ID');
+      document.getElementById('ck-hutang-nominal').textContent = 'Rp '+kurang.toLocaleString('id-ID');
     } else {
       hutangCard.style.display = 'block';
       hutangCard.className     = 'hutang-card hutang-ok';
-      document.getElementById('ck-hutang-icon').innerHTML   = '<i class="fa-solid fa-circle-check"></i>';
+      document.getElementById('ck-hutang-icon').innerHTML = '<i class="fa-solid fa-circle-check"></i>';
       document.getElementById('ck-hutang-icon').style.color = 'var(--p)';
       document.getElementById('ck-hutang-title').textContent = 'Tabungan Mencukupi - Tidak Perlu Hutang!';
-      document.getElementById('ck-hutang-sub').textContent   = 'Proyeksi tabungan sudah melebihi total biaya';
+      document.getElementById('ck-hutang-sub').textContent = 'Proyeksi tabungan sudah melebihi total biaya';
       document.getElementById('ck-hutang-nominal').style.color = 'var(--p)';
-      document.getElementById('ck-hutang-nominal').textContent  = '+Rp '+Math.abs(kurang).toLocaleString('id-ID')+' sisa';
+      document.getElementById('ck-hutang-nominal').textContent = '+Rp '+Math.abs(kurang).toLocaleString('id-ID')+' sisa';
     }
     // update nilai hutang di kalkulator bunga
     window._ckHutang = Math.max(0, kurang);
@@ -1960,11 +2224,11 @@ function _ckCollectData(){
 // Hitung total biaya dari semua field (tanpa UI side-effect)
 function _ckCalcTotal(){
   const grp = {
-    lamaran:   ['ck-lamaran','ck-cincin-lamaran','ck-seserahan-lamaran','ck-uang-dapur','ck-siraman','ck-midodareni'],
+    lamaran: ['ck-lamaran','ck-cincin-lamaran','ck-seserahan-lamaran','ck-uang-dapur','ck-siraman','ck-midodareni'],
     mahar:     ['ck-mahar','ck-cincin-nikah','ck-seserahan-nikah','ck-perhiasan'],
     admin:     ['ck-kua','ck-surat','ck-buku','ck-saksi'],
     akad:      ['ck-dekor-akad','ck-konsumsi-akad','ck-sound-akad','ck-qori'],
-    resepsi:   ['ck-gedung','ck-tenda','ck-catering','ck-dekor-resepsi','ck-sound-resepsi','ck-hiburan','ck-souvenir','ck-undangan'],
+    resepsi: ['ck-gedung','ck-tenda','ck-catering','ck-dekor-resepsi','ck-sound-resepsi','ck-hiburan','ck-souvenir','ck-undangan'],
     busana:    ['ck-gaun','ck-jas','ck-makeup','ck-seragam','ck-aksesori','ck-perawatan'],
     dok:       ['ck-foto','ck-video','ck-prewed','ck-album'],
     transport: ['ck-mobil','ck-shuttle','ck-hotel','ck-akom-keluarga'],
@@ -2007,10 +2271,10 @@ async function loadSimulasi(){
 
 /* - KALKULATOR BUNGA PINJAMAN - */
 function hitungBunga(){
-  const pokok  = window._ckHutang || 0;
-  const bunga  = parseFloat(document.getElementById('ck-bunga')?.value) || 0;
-  const tenor  = parseFloat(document.getElementById('ck-tenor')?.value) || 0;
-  const wrap   = document.getElementById('ck-cicilan-wrap');
+  const pokok = window._ckHutang || 0;
+  const bunga = parseFloat(document.getElementById('ck-bunga')?.value) || 0;
+  const tenor = parseFloat(document.getElementById('ck-tenor')?.value) || 0;
+  const wrap = document.getElementById('ck-cicilan-wrap');
   if(pokok > 0 && bunga > 0 && tenor > 0){
     const bungaPerBulan = bunga / 100 / 12;
     const cicilan       = Math.round(pokok * bungaPerBulan / (1 - Math.pow(1+bungaPerBulan, -tenor)));
@@ -2038,11 +2302,11 @@ function navigasiMasaDepan(){
   // ambil total dari kalkulator
   const rp = id => parseRp(id);
   const grp = {
-    lamaran:   ['ck-lamaran','ck-cincin-lamaran','ck-seserahan-lamaran','ck-uang-dapur','ck-siraman','ck-midodareni'],
+    lamaran: ['ck-lamaran','ck-cincin-lamaran','ck-seserahan-lamaran','ck-uang-dapur','ck-siraman','ck-midodareni'],
     mahar:     ['ck-mahar','ck-cincin-nikah','ck-seserahan-nikah','ck-perhiasan'],
     admin:     ['ck-kua','ck-surat','ck-buku','ck-saksi'],
     akad:      ['ck-dekor-akad','ck-konsumsi-akad','ck-sound-akad','ck-qori'],
-    resepsi:   ['ck-gedung','ck-tenda','ck-catering','ck-dekor-resepsi','ck-sound-resepsi','ck-hiburan','ck-souvenir','ck-undangan'],
+    resepsi: ['ck-gedung','ck-tenda','ck-catering','ck-dekor-resepsi','ck-sound-resepsi','ck-hiburan','ck-souvenir','ck-undangan'],
     busana:    ['ck-gaun','ck-jas','ck-makeup','ck-seragam','ck-aksesori','ck-perawatan'],
     dok:       ['ck-foto','ck-video','ck-prewed','ck-album'],
     transport: ['ck-mobil','ck-shuttle','ck-hotel','ck-akom-keluarga'],
@@ -2053,7 +2317,7 @@ function navigasiMasaDepan(){
   Object.values(grp).forEach(ids => ids.forEach(id => total += rp(id)));
 
   // jika ada tabungan, ambil surplus (tabungan - total) atau total sebagai modal
-  const tabungan   = parseRp('ck-tabungan');
+  const tabungan = parseRp('ck-tabungan');
   const modalSaran = tabungan > total ? (tabungan - total) : total;
 
   // navigasi ke halaman roadmap, switch langsung ke tab perencanaan
@@ -2092,14 +2356,14 @@ const SAHAM_LIST = [
 function hitungSahamList(modal, tahun, fmt, prefix){
   const results = [];
   SAHAM_LIST.forEach(s=>{
-    const thnEl   = document.getElementById(prefix+'proj-'+s.code+'-thn');
-    const thnxEl  = document.getElementById(prefix+'proj-'+s.code+'-thnx');
+    const thnEl = document.getElementById(prefix+'proj-'+s.code+'-thn');
+    const thnxEl = document.getElementById(prefix+'proj-'+s.code+'-thnx');
     const totalEl = document.getElementById(prefix+'proj-'+s.code+'-total');
     const hasilThn = modal * s.rate;
     const total    = modal * Math.pow(1 + s.rate, tahun);
     results.push({code:s.code.toUpperCase(), rate:s.rate, total});
     if(!thnEl || !totalEl) return;
-    thnEl.textContent   = fmt(hasilThn);
+    thnEl.textContent = fmt(hasilThn);
     if(thnxEl) thnxEl.textContent = tahun;
     totalEl.textContent = fmt(total);
   });
@@ -2108,8 +2372,8 @@ function hitungSahamList(modal, tahun, fmt, prefix){
 
 /* - PROYEKSI INVESTASI - */
 function hitungProyeksi(){
-  const modal  = parseRp('proj-modal');
-  const tahun  = parseFloat(document.getElementById('proj-tahun')?.value) || 5;
+  const modal = parseRp('proj-modal');
+  const tahun = parseFloat(document.getElementById('proj-tahun')?.value) || 5;
   const fmt    = v => v > 0 ? 'Rp '+Math.round(v).toLocaleString('id-ID') : '-';
 
   // update label tahun
@@ -2120,35 +2384,35 @@ function hitungProyeksi(){
   if(modal <= 0){ ['proj-bbri-div','proj-bbri-bln','proj-bbri-total','proj-sr-bersih','proj-sr-bln','proj-sr-total','proj-rdm-thn','proj-rdm-bln','proj-rdm-total','proj-emas-thn','proj-emas-total','proj-emas-untung'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='-';}); return; }
 
   // TLKM - dividen ~8% / tahun (JII syariah), asumsi reinvest compound
-  const bbriYield  = 0.08;
+  const bbriYield = 0.08;
   const bbriDiv    = modal * bbriYield;
-  const bbriTotal  = modal * Math.pow(1 + bbriYield, tahun);
-  document.getElementById('proj-bbri-div').textContent  = fmt(bbriDiv);
-  document.getElementById('proj-bbri-bln').textContent  = fmt(bbriDiv/12);
+  const bbriTotal = modal * Math.pow(1 + bbriYield, tahun);
+  document.getElementById('proj-bbri-div').textContent = fmt(bbriDiv);
+  document.getElementById('proj-bbri-bln').textContent = fmt(bbriDiv/12);
   document.getElementById('proj-bbri-total').textContent= fmt(bbriTotal);
 
   // Saham lain (Low/Medium/High Risk) - asumsi total return (CAGR + dividen), reinvest compound
   const sahamResults = hitungSahamList(modal, tahun, fmt, '');
 
   // Sukuk SR022 - 6.55% gross, 10% pajak = 5.895% bersih / tahun, dibayar bulanan
-  const srRate  = 0.06555 * 0.9; // bersih setelah pajak 10%
-  const srBln   = modal * srRate / 12;
+  const srRate = 0.06555 * 0.9; // bersih setelah pajak 10%
+  const srBln = modal * srRate / 12;
   const srTotal = modal + (srBln * 12 * Math.min(tahun, 5)); // maks 5 th, pokok kembali
   document.getElementById('proj-sr-bersih').textContent = fmt(modal * srRate);
   document.getElementById('proj-sr-bln').textContent    = fmt(srBln);
-  document.getElementById('proj-sr-total').textContent  = fmt(srTotal);
+  document.getElementById('proj-sr-total').textContent = fmt(srTotal);
 
   // Reksa Dana Syariah Pasar Uang - 5.5% compound, no pajak
-  const rdmRate  = 0.055;
+  const rdmRate = 0.055;
   const rdmTotal = modal * Math.pow(1 + rdmRate, tahun);
-  document.getElementById('proj-rdm-thn').textContent   = fmt(modal * rdmRate);
-  document.getElementById('proj-rdm-bln').textContent   = fmt(modal * rdmRate / 12);
+  document.getElementById('proj-rdm-thn').textContent = fmt(modal * rdmRate);
+  document.getElementById('proj-rdm-bln').textContent = fmt(modal * rdmRate / 12);
   document.getElementById('proj-rdm-total').textContent = fmt(rdmTotal);
 
   // Emas - asumsi kenaikan 10%/tahun
-  const emasRate  = 0.10;
+  const emasRate = 0.10;
   const emasTotal = modal * Math.pow(1 + emasRate, tahun);
-  document.getElementById('proj-emas-thn').textContent   = fmt(modal * emasRate);
+  document.getElementById('proj-emas-thn').textContent = fmt(modal * emasRate);
   document.getElementById('proj-emas-total').textContent = fmt(emasTotal);
   document.getElementById('proj-emas-untung').textContent= fmt(emasTotal - modal);
 
@@ -2156,8 +2420,8 @@ function hitungProyeksi(){
   const sumCard = document.getElementById('proj-summary-card');
   if(sumCard && modal > 0){
     sumCard.style.display = 'block';
-    document.getElementById('proj-sum-modal').textContent  = 'Rp '+Math.round(modal).toLocaleString('id-ID');
-    document.getElementById('proj-sum-tahun').textContent  = tahun;
+    document.getElementById('proj-sum-modal').textContent = 'Rp '+Math.round(modal).toLocaleString('id-ID');
+    document.getElementById('proj-sum-tahun').textContent = tahun;
     document.getElementById('proj-sum-div-thn').textContent= fmt(bbriDiv);
     document.getElementById('proj-sum-div-bln').textContent= fmt(bbriDiv/12);
     document.getElementById('proj-sum-sr-bln').textContent = fmt(srBln);
@@ -2185,7 +2449,7 @@ function hitungProyeksi(){
   // - Auto-open semua accordion investasi -
   ['saham','sh-low','sh-mid','sh-high','sr','rdm','emas'].forEach(key => {
     const body = document.getElementById('body-'+key);
-    const tog  = document.getElementById('tog-'+key);
+    const tog = document.getElementById('tog-'+key);
     if(body && body.style.display === 'none'){
       body.style.display = 'flex';
       if(tog) tog.style.transform = 'rotate(180deg)';
@@ -2197,10 +2461,10 @@ function hitungProyeksi(){
 function hitungProyeksiRm(){
   const modalEl = document.getElementById('rm-proj-modal');
   if(!modalEl) return;
-  const raw   = modalEl.value.replace(/\./g,'').replace(/[^0-9]/g,'');
+  const raw = modalEl.value.replace(/\./g,'').replace(/[^0-9]/g,'');
   const modal = parseFloat(raw)||0;
   const tahun = parseFloat(document.getElementById('rm-proj-tahun')?.value)||5;
-  const fmt   = v => v > 0 ? 'Rp '+Math.round(v).toLocaleString('id-ID') : '-';
+  const fmt = v => v > 0 ? 'Rp '+Math.round(v).toLocaleString('id-ID') : '-';
 
   // update label tahun
   ['rm-proj-bbri-thn','rm-proj-rdm-thnx','rm-proj-emas-thnx'].forEach(id=>{
@@ -2215,35 +2479,35 @@ function hitungProyeksiRm(){
 
   // TLKM - dividen ~8% / tahun
   const bbriYield = 0.08;
-  const bbriDiv   = modal * bbriYield;
+  const bbriDiv = modal * bbriYield;
   const bbriTotal = modal * Math.pow(1+bbriYield, tahun);
-  document.getElementById('rm-proj-bbri-div').textContent   = fmt(bbriDiv);
-  document.getElementById('rm-proj-bbri-bln').textContent   = fmt(bbriDiv/12);
+  document.getElementById('rm-proj-bbri-div').textContent = fmt(bbriDiv);
+  document.getElementById('rm-proj-bbri-bln').textContent = fmt(bbriDiv/12);
   document.getElementById('rm-proj-bbri-total').textContent = fmt(bbriTotal);
 
   // Saham lain (Low/Medium/High Risk) - asumsi total return (CAGR + dividen), reinvest compound
   const rmSahamResults = hitungSahamList(modal, tahun, fmt, 'rm-');
 
   // Sukuk SR022 - 6.55% gross, pajak 10% → 5.895% bersih
-  const srRate  = 0.06555 * 0.9;
-  const srBln   = modal * srRate / 12;
+  const srRate = 0.06555 * 0.9;
+  const srBln = modal * srRate / 12;
   const srTotal = modal + (srBln * 12 * Math.min(tahun, 5));
   document.getElementById('rm-proj-sr-bersih').textContent = fmt(modal * srRate);
   document.getElementById('rm-proj-sr-bln').textContent    = fmt(srBln);
-  document.getElementById('rm-proj-sr-total').textContent  = fmt(srTotal);
+  document.getElementById('rm-proj-sr-total').textContent = fmt(srTotal);
 
   // Reksa Dana Syariah Pasar Uang - 5.5% compound
-  const rdmRate  = 0.055;
+  const rdmRate = 0.055;
   const rdmTotal = modal * Math.pow(1+rdmRate, tahun);
-  document.getElementById('rm-proj-rdm-thn').textContent   = fmt(modal * rdmRate);
-  document.getElementById('rm-proj-rdm-bln').textContent   = fmt(modal * rdmRate / 12);
+  document.getElementById('rm-proj-rdm-thn').textContent = fmt(modal * rdmRate);
+  document.getElementById('rm-proj-rdm-bln').textContent = fmt(modal * rdmRate / 12);
   document.getElementById('rm-proj-rdm-total').textContent = fmt(rdmTotal);
 
   // Emas - ~10%/tahun
-  const emasRate  = 0.10;
+  const emasRate = 0.10;
   const emasTotal = modal * Math.pow(1+emasRate, tahun);
   document.getElementById('rm-proj-emas-thn').textContent    = fmt(modal * emasRate);
-  document.getElementById('rm-proj-emas-total').textContent  = fmt(emasTotal);
+  document.getElementById('rm-proj-emas-total').textContent = fmt(emasTotal);
   document.getElementById('rm-proj-emas-untung').textContent = fmt(emasTotal - modal);
 
   // Summary card
@@ -2252,9 +2516,9 @@ function hitungProyeksiRm(){
     sumCard.style.display = 'block';
     document.getElementById('rm-proj-sum-modal').textContent    = 'Rp '+Math.round(modal).toLocaleString('id-ID');
     document.getElementById('rm-proj-sum-tahun').textContent    = tahun;
-    document.getElementById('rm-proj-sum-div-thn').textContent  = fmt(bbriDiv);
-    document.getElementById('rm-proj-sum-div-bln').textContent  = fmt(bbriDiv/12);
-    document.getElementById('rm-proj-sum-sr-bln').textContent   = fmt(srBln);
+    document.getElementById('rm-proj-sum-div-thn').textContent = fmt(bbriDiv);
+    document.getElementById('rm-proj-sum-div-bln').textContent = fmt(bbriDiv/12);
+    document.getElementById('rm-proj-sum-sr-bln').textContent = fmt(srBln);
 
     // nilai akhir terbaik = bandingkan SEMUA instrumen (TLKM, emas, RDPU, sukuk, & seluruh daftar saham)
     const allOptions = [
@@ -2343,16 +2607,16 @@ function switchRoadmapTab(id){
   tabs.forEach((t,i)=>{
     if(!t.btn) return;
     if(i===activeIdx){
-      t.btn.style.borderColor   = t.activeColor;
+      t.btn.style.borderColor = t.activeColor;
       t.btn.style.background    = t.activeBg;
       t.btn.style.boxShadow     = '0 2px 10px rgba(0,0,0,.06)';
-      if(t.icon){  t.icon.style.background = t.iconBgActive; t.icon.style.color = '#fff'; }
+      if(t.icon){ t.icon.style.background = t.iconBgActive; t.icon.style.color = '#fff'; }
       if(t.label){ t.label.style.color = t.activeColor; t.label.style.fontWeight = '700'; }
     } else {
-      t.btn.style.borderColor   = 'var(--border)';
+      t.btn.style.borderColor = 'var(--border)';
       t.btn.style.background    = 'var(--card)';
       t.btn.style.boxShadow     = 'none';
-      if(t.icon){  t.icon.style.background = t.iconBg; t.icon.style.color = t.iconInactiveColor; }
+      if(t.icon){ t.icon.style.background = t.iconBg; t.icon.style.color = t.iconInactiveColor; }
       if(t.label){ t.label.style.color = 'var(--muted)'; t.label.style.fontWeight = '600'; }
     }
   });
@@ -2386,18 +2650,50 @@ function switchEduTab(id){
     if(!t.btn) return;
     if(i===activeIdx){
       t.btn.style.borderColor = t.activeColor;
-      t.btn.style.background  = t.activeBg;
-      t.btn.style.boxShadow   = '0 2px 10px rgba(0,0,0,.06)';
-      if(t.icon){  t.icon.style.background = t.iconBgActive; t.icon.style.color = '#fff'; }
+      t.btn.style.background = t.activeBg;
+      t.btn.style.boxShadow = '0 2px 10px rgba(0,0,0,.06)';
+      if(t.icon){ t.icon.style.background = t.iconBgActive; t.icon.style.color = '#fff'; }
       if(t.label){ t.label.style.color = t.activeColor; t.label.style.fontWeight = '700'; }
     } else {
       t.btn.style.borderColor = 'var(--border)';
-      t.btn.style.background  = 'var(--card)';
-      t.btn.style.boxShadow   = 'none';
-      if(t.icon){  t.icon.style.background = t.iconBg; t.icon.style.color = t.iconInactiveColor; }
+      t.btn.style.background = 'var(--card)';
+      t.btn.style.boxShadow = 'none';
+      if(t.icon){ t.icon.style.background = t.iconBg; t.icon.style.color = t.iconInactiveColor; }
       if(t.label){ t.label.style.color = 'var(--muted)'; t.label.style.fontWeight = '600'; }
     }
   });
+}
+
+/* - TOGGLE: STUDI KASUS & KREDIT - */
+function akToggleStudi(){
+  const wrap = document.getElementById('akStudiWrap');
+  const chevron = document.getElementById('akStudiChevron');
+  const btn = document.getElementById('akStudiBtn');
+  if(!wrap) return;
+  const isOpen = wrap.style.display !== 'none';
+  wrap.style.display = isOpen ? 'none' : 'block';
+  if(chevron) chevron.style.transform = isOpen ? '' : 'rotate(180deg)';
+  if(btn){ btn.style.borderRadius = isOpen ? 'var(--r-lg)' : 'var(--r-lg) var(--r-lg) 0 0'; btn.style.borderBottom = isOpen ? '' : 'none'; }
+}
+function akToggleKredit(){
+  const wrap = document.getElementById('akKreditWrap');
+  const chevron = document.getElementById('akKreditChevron');
+  const btn = document.getElementById('akKreditBtn');
+  if(!wrap) return;
+  const isOpen = wrap.style.display !== 'none';
+  wrap.style.display = isOpen ? 'none' : 'block';
+  if(chevron) chevron.style.transform = isOpen ? '' : 'rotate(180deg)';
+  if(btn){ btn.style.borderRadius = isOpen ? 'var(--r-lg)' : 'var(--r-lg) var(--r-lg) 0 0'; btn.style.borderBottom = isOpen ? '' : 'none'; }
+}
+function kcToggle(wrapId, chevronId, btnId){
+  const wrap = document.getElementById(wrapId);
+  const chevron = document.getElementById(chevronId);
+  const btn = document.getElementById(btnId);
+  if(!wrap) return;
+  const isOpen = wrap.style.display !== 'none';
+  wrap.style.display = isOpen ? 'none' : 'block';
+  if(chevron) chevron.style.transform = isOpen ? 'rotate(180deg)' : '';
+  if(btn){ btn.style.borderRadius = isOpen ? 'var(--r-lg)' : 'var(--r-lg) var(--r-lg) 0 0'; btn.style.borderBottom = isOpen ? '' : 'none'; }
 }
 
 /* - ALOKASI KEUANGAN - */
@@ -2456,17 +2752,17 @@ function akWireHoverLink(){
 function akHitung(){
   akWireHoverLink();
 
-  const raw   = document.getElementById('akGaji').value.replace(/\D/g,'');
-  const gaji  = parseInt(raw,10) || 0;
-  const pcts  = [50, 20, 15, 15];
+  const raw = document.getElementById('akGaji').value.replace(/\D/g,'');
+  const gaji = parseInt(raw,10) || 0;
+  const pcts = [50, 20, 15, 15];
   const rpIds = ['akRp1','akRp2','akRp3','akRp4'];
   const segIds= ['akSeg1','akSeg2','akSeg3','akSeg4'];
 
   /* donut geometry - r=64 (matches SVG circle r="64"), gap=3px between segments */
-  const R   = 64;
-  const C   = 2 * Math.PI * R;         /* ≈402.12 */
+  const R = 64;
+  const C = 2 * Math.PI * R;         /* ≈402.12 */
   const GAP = 3;
-  const N   = 4;
+  const N = 4;
   const usable = C - GAP * N;          /* ≈390.12 */
   const startOffset = -C / 4;          /* top of circle */
 
@@ -2497,7 +2793,7 @@ function akHitung(){
     if(!el) return;
     el.className='ak-legend-rp';
     const fromAmt = Math.round(prevGaji*pcts[i]/100);
-    const toAmt   = Math.round(gaji*pcts[i]/100);
+    const toAmt = Math.round(gaji*pcts[i]/100);
     akAnimateNumber(el, fromAmt, toAmt, v=>'Rp '+v.toLocaleString('id-ID'));
   });
 
@@ -2511,7 +2807,7 @@ function akHitung(){
   /* animate each segment's arc length + position */
   let cumOffset = startOffset;
   pcts.forEach((pct,i)=>{
-    const segLen  = usable * pct / 100;
+    const segLen = usable * pct / 100;
     const seg     = document.getElementById(segIds[i]);
     if(!seg) return;
     seg.style.strokeDashoffset = cumOffset;
@@ -2568,11 +2864,11 @@ function sdgcInitCanvas(){
   const canvas = document.getElementById('sdgcCanvas');
   if(!canvas) return;
   const wrap = canvas.parentElement;
-  canvas.width  = wrap.offsetWidth || 460;
+  canvas.width = wrap.offsetWidth || 460;
   canvas.height = 110;
   _sdgcCtx = canvas.getContext('2d');
   _sdgcCtx.strokeStyle = '#1B6B5A';
-  _sdgcCtx.lineWidth   = 2.2;
+  _sdgcCtx.lineWidth = 2.2;
   _sdgcCtx.lineCap     = 'round';
   _sdgcCtx.lineJoin    = 'round';
   const hint = document.getElementById('sdgcHint');
@@ -2681,6 +2977,17 @@ function sdgcpSimpan(){
   }
   const nama=(document.getElementById('sdgcp-nama')?.value||'').trim();
   const kota=(document.getElementById('sdgcp-kota')?.value||'').trim();
+  // Validasi nama & kota wajib diisi (fix SDG-03)
+  if(!nama){
+    const el=document.getElementById('sdgcp-nama');
+    if(el){el.style.borderColor='#E05252';el.style.outline='2px solid #FECACA';el.focus();setTimeout(()=>{el.style.borderColor='';el.style.outline='';},2500);}
+    showToast('Nama Kepala Keluarga wajib diisi.','err');return;
+  }
+  if(!kota){
+    const el=document.getElementById('sdgcp-kota');
+    if(el){el.style.borderColor='#E05252';el.style.outline='2px solid #FECACA';el.focus();setTimeout(()=>{el.style.borderColor='';el.style.outline='';},2500);}
+    showToast('Kota wajib diisi.','err');return;
+  }
   const now=new Date();const tgl=now.toLocaleDateString('id-ID',{day:'2-digit',month:'long',year:'numeric'});
   sessionStorage.setItem('sdg_nama',nama);sessionStorage.setItem('sdg_kota',kota);
   const sdg1=document.getElementById('sdgcp-cb1')?.checked||false;
@@ -2901,11 +3208,11 @@ function sdgcpRenderRingkasan(){
   `;
 }
 function sdgcSimpan(){
-  const nama  = (document.getElementById('sdgc-nama')?.value||'').trim();
-  const kota  = (document.getElementById('sdgc-kota')?.value||'').trim();
-  const sdg1  = document.getElementById('sdgc-cb1')?.checked  || false;
-  const sdg3  = document.getElementById('sdgc-cb3')?.checked  || false;
-  const sdg4  = document.getElementById('sdgc-cb4')?.checked  || false;
+  const nama = (document.getElementById('sdgc-nama')?.value||'').trim();
+  const kota = (document.getElementById('sdgc-kota')?.value||'').trim();
+  const sdg1 = document.getElementById('sdgc-cb1')?.checked || false;
+  const sdg3 = document.getElementById('sdgc-cb3')?.checked || false;
+  const sdg4 = document.getElementById('sdgc-cb4')?.checked || false;
   const sdg10 = document.getElementById('sdgc-cb10')?.checked || false;
   const sdg16 = document.getElementById('sdgc-cb16')?.checked || false;
 
@@ -2930,13 +3237,13 @@ function sdgcSimpan(){
   }
 
   // Simpan ke sessionStorage
-  sessionStorage.setItem('sdg_nama',   nama);
-  sessionStorage.setItem('sdg_kota',   kota);
-  sessionStorage.setItem('sdg_sdg1',   sdg1?'1':'0');
-  sessionStorage.setItem('sdg_sdg3',   sdg3?'1':'0');
-  sessionStorage.setItem('sdg_sdg4',   sdg4?'1':'0');
-  sessionStorage.setItem('sdg_sdg10',  sdg10?'1':'0');
-  sessionStorage.setItem('sdg_sdg16',  sdg16?'1':'0');
+  sessionStorage.setItem('sdg_nama', nama);
+  sessionStorage.setItem('sdg_kota', kota);
+  sessionStorage.setItem('sdg_sdg1', sdg1?'1':'0');
+  sessionStorage.setItem('sdg_sdg3', sdg3?'1':'0');
+  sessionStorage.setItem('sdg_sdg4', sdg4?'1':'0');
+  sessionStorage.setItem('sdg_sdg10', sdg10?'1':'0');
+  sessionStorage.setItem('sdg_sdg16', sdg16?'1':'0');
   sessionStorage.setItem('sdg_signed', '1');
   if(rmCurrentUser){
     _sb.auth.getSession().then(({ data:{ session } })=>{
@@ -2967,14 +3274,14 @@ function sdgcSimpan(){
 /* - SCROLL-HIDE: sub-fitur tab bar - */
 (function(){
   let lastY = 0, ticking = false;
-  const HIDE_THRESHOLD  = 30;   // px scroll-down sebelum sembunyi
-  const SHOW_THRESHOLD  = -8;   // px scroll-up sebelum muncul lagi
-  const TOP_ALWAYS_SHOW = 80;   // selalu tampil kalau dekat atas halaman
+  const HIDE_THRESHOLD = 30; // px scroll-down sebelum sembunyi
+  const SHOW_THRESHOLD = -8; // px scroll-up sebelum muncul lagi
+  const TOP_ALWAYS_SHOW = 80; // selalu tampil kalau dekat atas halaman
 
   function getActiveBar(){
     const p = typeof currentPage !== 'undefined' ? currentPage : '';
     if(p === 'makna-pernikahan')     return document.getElementById('mkTabBar');
-    if(p === 'pendaftaran-nikah')   return document.getElementById('pnTabBar');
+    if(p === 'pendaftaran-nikah') return document.getElementById('pnTabBar');
     if(p === 'simulasi-biaya-nikah') return document.getElementById('sbTabBar');
     return null;
   }
@@ -2985,7 +3292,7 @@ function sdgcSimpan(){
     requestAnimationFrame(function(){
       const y     = window.scrollY;
       const delta = y - lastY;
-      const bar   = getActiveBar();
+      const bar = getActiveBar();
 
       if(bar){
         if(y < TOP_ALWAYS_SHOW){
@@ -2998,7 +3305,7 @@ function sdgcSimpan(){
       }
 
       lastY    = y;
-      ticking  = false;
+      ticking = false;
     });
   }
 
@@ -3007,27 +3314,20 @@ function sdgcSimpan(){
 
 
 
+
 // Hero image skeleton: sembunyikan shimmer saat gambar sudah load
 (function(){
   var img = document.getElementById('heroImg');
   if(!img) return;
   function onHeroLoaded(){
-    // Fade in gambar
+    // Fade in gambar pakai CSS transition, tanpa setInterval
     img.style.transition = 'opacity 0.6s ease';
-    img.setAttribute('opacity','0');
-    var op = 0;
-    var t = setInterval(function(){
-      op += 0.05;
-      img.setAttribute('opacity', Math.min(op,1));
-      if(op >= 1){
-        clearInterval(t);
-        // Sembunyikan skeleton & shimmer
-        var sk = document.getElementById('heroImgSkeleton');
-        var sh = document.getElementById('heroImgShimmer');
-        if(sk) sk.setAttribute('opacity','0');
-        if(sh) sh.setAttribute('opacity','0');
-      }
-    }, 20);
+    img.setAttribute('opacity','1');
+    // Sembunyikan skeleton & shimmer
+    var sk = document.getElementById('heroImgSkeleton');
+    var sh = document.getElementById('heroImgShimmer');
+    if(sk){ sk.style.transition='opacity 0.4s ease'; sk.setAttribute('opacity','0'); }
+    if(sh){ sh.setAttribute('opacity','0'); }
   }
   // SVG <image> tidak punya event onload native di semua browser
   // Pakai Image() object JS sebagai proxy
@@ -3044,17 +3344,18 @@ function sdgcSimpan(){
 })();
 
 
+
 (function(){
   if(!ENABLE_TURNSTILE) return;
 
-  // Load script Cloudflare setelah halaman selesai — tidak ganggu animasi
+  // Load script Cloudflare setelah halaman selesai tidak ganggu animasi
   window.addEventListener('load', function(){
     var s = document.createElement('script');
     s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
     s.async = true;
     document.body.appendChild(s);
 
-    // Widget beranda — muncul setelah animasi beranda selesai (~1 detik)
+    // Widget beranda muncul setelah animasi beranda selesai (~1 detik)
     if(TURNSTILE_SHOW_ON_BERANDA){
       var wrap = document.getElementById('turnstile-beranda-wrap');
       if(!wrap) return;
@@ -3085,3 +3386,22 @@ function sdgcSimpan(){
   });
 })();
 
+
+
+/* ============================================
+   LEGAL MODAL
+============================================ */
+/* openLegalModal → sekarang navigasi ke halaman penuh (SPA) */
+function openLegalModal(type){
+  goPage(type);
+}
+function closeLegalModal(){
+  history.back();
+}
+// Escape: kembali dari halaman legal
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){
+    const legal = ['privasi','ketentuan','cookie'];
+    if(legal.includes(currentPage)) history.back();
+  }
+});

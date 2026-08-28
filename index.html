@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous"/>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   
-  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
 
@@ -140,7 +140,7 @@
           <span class="feat-chip" onclick="goPage('fitur')"><i class="fa-solid fa-chart-line"></i> Dashboard SDGs</span>
         </div>
         <div class="hero-stats">
-          <div class="stat-item"><span class="stat-num" id="statFitur">7+</span><span class="stat-lbl">Fitur Utama</span></div>
+          <div class="stat-item"><span class="stat-num" id="statFitur">6</span><span class="stat-lbl">Fitur Utama</span></div>
           <div class="stat-sep"></div>
           <div class="stat-item"><span class="stat-num">100%</span><span class="stat-lbl">Gratis & Terbuka</span></div>
           <div class="stat-sep"></div>
@@ -256,7 +256,7 @@
         </div>
         <div class="bcard reveal d2" onclick="goPage('fitur')">
           <div class="bcard-ico" style="background:linear-gradient(135deg,var(--gold),var(--gold-l))"><i class="fa-solid fa-layer-group"></i></div>
-          <h3>7 Fitur Terintegrasi</h3>
+          <h3>6 Fitur Terintegrasi</h3>
           <p>Dari simulasi biaya nikah, roadmap keluarga, hingga Dashboard SDGs - semua terintegrasi dalam satu platform cerdas.</p>
           <div class="bcard-link">Lihat Semua Fitur <i class="fa-solid fa-arrow-right" style="font-size:.7rem"></i></div>
         </div>
@@ -279,7 +279,7 @@
         <h2>Wujudkan Keluarga Sakinah<br>Bersama Kami</h2>
         <p>Bergabunglah dengan ribuan pasangan Indonesia yang mempersiapkan pernikahan secara sederhana, legal, dan penuh berkah.</p>
         <div class="acts">
-          <button class="btn btn-gold" onclick="openAuth('daftar')"><i class="fa-solid fa-rocket"></i> Daftar Gratis Sekarang</button>
+          <button data-cta-daftar="1" class="btn btn-gold" onclick="openAuth('daftar')"><i class="fa-solid fa-rocket"></i> Daftar Gratis Sekarang</button>
           <button class="btn btn-ghost" onclick="goPage('fitur')"><i class="fa-solid fa-eye"></i> Lihat Semua Fitur</button>
         </div>
       </div>
@@ -353,7 +353,7 @@
         <h2>Siap Memulai Perjalanan?</h2>
         <p>Daftarkan diri sekarang dan akses semua fitur RUKUN MAPAN secara gratis.</p>
         <div class="acts">
-          <button class="btn btn-gold" onclick="openAuth('daftar')"><i class="fa-solid fa-rocket"></i> Daftar Gratis</button>
+          <button data-cta-daftar="1" class="btn btn-gold" onclick="openAuth('daftar')"><i class="fa-solid fa-rocket"></i> Daftar Gratis</button>
           <button class="btn btn-ghost" onclick="goPage('fitur')">Lihat Fitur <i class="fa-solid fa-arrow-right"></i></button>
         </div>
       </div>
@@ -431,7 +431,7 @@
           <span class="fb-badge ic6"><i class="fa-solid fa-graduation-cap"></i> Edukasi</span>
           <div class="fb-icon ic6"><i class="fa-solid fa-book-open-reader"></i></div>
           <div class="fb-title">Modul Edukasi Interaktif</div>
-          <p class="fb-desc">40+ modul literasi finansial, komunikasi keluarga, parenting Islami, dan pengembangan diri - lengkap dengan sertifikat digital.</p>
+          <p class="fb-desc">Beberapa modul edukasi dan live video tentang bimbingan perkawinan yang dapat membantu kehidupan bagi para pasangan.</p>
           <span class="fb-cta">Mulai Belajar <i class="fa-solid fa-arrow-right"></i></span>
         </div>
 
@@ -456,8 +456,8 @@
       </div><!-- /feat-bento -->
 
       <div style="text-align:center;margin-top:52px">
-        <p style="font-size:.88rem;color:var(--muted);margin-bottom:18px">Belum punya akun? Daftar gratis dan akses semua fitur sekarang.</p>
-        <button class="btn btn-primary" onclick="openAuth('daftar')"><i class="fa-solid fa-rocket"></i> Daftar Gratis - Mulai Sekarang</button>
+        <p id="ctaFiturTeks" style="font-size:.88rem;color:var(--muted);margin-bottom:18px">Belum punya akun? Daftar gratis dan akses semua fitur sekarang.</p>
+        <button data-cta-daftar="1" class="btn btn-primary" onclick="openAuth('daftar')"><i class="fa-solid fa-rocket"></i> Daftar Gratis - Mulai Sekarang</button>
       </div>
     </div>
   </section>
@@ -610,7 +610,7 @@
             <p style="font-size:.82rem;color:var(--muted);font-weight:500;margin:0">Memuat gambar...</p>
           </div>
           <img loading="lazy" id="nikahOnlineImg" src="" alt="Alur Nikah Online SIMKAH" style="width:100%;display:block;opacity:0;transition:opacity .4s ease"
-            onerror="if(!this.dataset.tried){this.dataset.tried=1;this.src=this.src.includes('lh3')?'https://drive.google.com/thumbnail?id='+(window.innerWidth<768?'1CDUu5ViaYucp3m91Cs4E-Pr0fBJ3emys':'1ZVMvGvA4m30qyzLPVQ3oVGxJ_ImxyD4Q')+'&sz=w1600':'';}else{document.getElementById('nikahOnlineLoading').innerHTML='<i class=\'fa-solid fa-image\' style=\'font-size:2rem;color:var(--border)\'></i><p style=\'font-size:.8rem;color:var(--muted);margin:8px 0 0\'>Gambar sedang dimuat</p>';}"
+            onerror="if(!this.dataset.tried){this.dataset.tried=1;this.src=this.src.includes('lh3')?'https://drive.google.com/thumbnail?id='+(window.innerWidth<768?'1kEheHcH12oP5eR4SgnIFW_LCfAu8ZZiU':'1XLZXRiBvVqo993xbgh_dBzwwNDOyu7_i')+'&sz=w1600':'';}else{document.getElementById('nikahOnlineLoading').innerHTML='<i class=\'fa-solid fa-image\' style=\'font-size:2rem;color:var(--border)\'></i><p style=\'font-size:.8rem;color:var(--muted);margin:8px 0 0\'>Gambar sedang dimuat</p>';}"
             onload="this.style.opacity='1';var ld=document.getElementById('nikahOnlineLoading');if(ld){ld.style.display='none';}var w=document.getElementById('nikahOnlineWrap');if(w)w.style.minHeight='';"/>
           <div style="position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,.45);color:#fff;padding:6px 12px;border-radius:99px;font-size:.72rem;font-weight:600;display:flex;align-items:center;gap:6px;backdrop-filter:blur(4px)">
             <i class="fa-solid fa-magnifying-glass-plus"></i> Fullscreen
@@ -662,14 +662,14 @@
 
     <!-- Tab 4: Cetak Kartu Nikah -->
     <div id="pnTab-cetak-kartu-nikah" class="pn-tab-content" style="display:none">
-      <div id="cetakKartuWrap" style="position:relative;border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh-lg);cursor:zoom-in;min-height:200px" onclick="openFullscreen(document.getElementById('cetakKartuImg').src)">
+      <div id="cetakKartuWrap" style="position:relative;border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh-lg);cursor:zoom-in;min-height:200px;max-height:520px" onclick="openFullscreen(document.getElementById('cetakKartuImg').src)">
         <div id="cetakKartuLoading" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:linear-gradient(135deg,#EEE8FF,#F5F0FF);cursor:default;z-index:2">
           <div style="width:48px;height:48px;border-radius:50%;border:3px solid var(--border);border-top-color:#7B5EA7;animation:ckSpin 0.8s linear infinite"></div>
           <p style="font-size:.82rem;color:var(--muted);font-weight:500;margin:0">Memuat gambar...</p>
         </div>
         
-        <img loading="lazy" id="cetakKartuImg" src="" alt="Cetak Kartu Nikah" style="width:100%;display:block;opacity:0;transition:opacity .4s ease"
-          onerror="if(!this.dataset.tried){this.dataset.tried=1;this.src=this.src.includes('lh3')?'https://drive.google.com/thumbnail?id='+(window.innerWidth<768?'1hBMHtk6M_vcWgLS_tXuspT9IxvYmyWgR':'1o2vob9KPXpVECXVipZeVpYjduq-k4US2')+'&sz=w1600':'';}else{document.getElementById('cetakKartuLoading').innerHTML='<i class=\'fa-solid fa-image\' style=\'font-size:2rem;color:var(--border)\'></i><p style=\'font-size:.8rem;color:var(--muted);margin:8px 0 0\'>Gambar sedang dimuat</p>';}"
+        <img loading="lazy" id="cetakKartuImg" src="" alt="Cetak Kartu Nikah" style="width:100%;height:100%;display:block;object-fit:cover;opacity:0;transition:opacity .4s ease"
+          onerror="if(!this.dataset.tried){this.dataset.tried=1;this.src=this.src.includes('lh3')?'https://drive.google.com/thumbnail?id=10pgbbg-fTe8YYE2sOrjvepGddc480R3g&sz=w1600':'';}else{document.getElementById('cetakKartuLoading').innerHTML='<i class=\'fa-solid fa-image\' style=\'font-size:2rem;color:var(--border)\'></i><p style=\'font-size:.8rem;color:var(--muted);margin:8px 0 0\'>Gambar sedang dimuat</p>';}"
           onload="this.style.opacity='1';var ld=document.getElementById('cetakKartuLoading');if(ld){ld.style.display='none';}var w=document.getElementById('cetakKartuWrap');if(w)w.style.minHeight='';"/>
         <div style="position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,.45);color:#fff;padding:6px 12px;border-radius:99px;font-size:.72rem;font-weight:600;display:flex;align-items:center;gap:6px;backdrop-filter:blur(4px)">
           <i class="fa-solid fa-magnifying-glass-plus"></i> Fullscreen
@@ -728,16 +728,16 @@
       <div style="text-align:center;margin-bottom:20px">
         <span class="label-pill" style="color:#3A7BD5;border-color:rgba(58,123,213,.3)"><i class="fa-solid fa-scale-balanced"></i> Nikah Mewah vs Nikah Simpel</span>
       </div>
-      <div style="border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh-lg);background:#000;position:relative;aspect-ratio:16/9">
+      <div style="border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh-lg);aspect-ratio:16/9;background:#0d1b2a">
         <iframe
-          src="https://drive.google.com/file/d/1JRIwWLDeD3Qp-AjbS8QVcZD29A5lwl3C/preview"
-          style="border:none;width:100%;height:100%;position:absolute;inset:0;display:block"
-          allow="autoplay; fullscreen"
-          allowfullscreen
-          loading="lazy"></iframe>
+          src="https://drive.google.com/file/d/1zU0j5CTZkEOdoSG41kfpvMy_dPx8rupu/preview"
+          style="width:100%;height:100%;border:none;display:block"
+          allow="autoplay"
+          allowfullscreen>
+        </iframe>
       </div>
       <p style="text-align:center;font-size:.78rem;color:var(--muted);margin-top:10px">
-        <i class="fa-solid fa-circle-play" style="color:#3A7BD5;margin-right:5px"></i>Gunakan tombol fullscreen pada video untuk tampilan layar penuh
+        <i class="fa-brands fa-google-drive" style="color:#3A7BD5;margin-right:5px"></i>Video diputar langsung di platform
       </p>
     </div>
 
@@ -2345,6 +2345,212 @@
         <div class="ak-total-val" id="akTotalVal">-</div>
       </div>
 
+      <!-- STUDI KASUS & KREDIT MACET -->
+      
+
+      <!-- STUDI KASUS TOGGLE BTN -->
+      <button id="akStudiBtn" onclick="akToggleStudi()" style="width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:28px;padding:13px 18px;background:var(--card);border:1.5px solid var(--border);border-radius:var(--r-lg);cursor:pointer;font-family:var(--ff);transition:var(--tr);box-shadow:var(--sh-sm)">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:36px;height:36px;border-radius:10px;background:#E8F5F0;color:var(--p);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0"><i class="fa-solid fa-users"></i></div>
+          <div style="text-align:left">
+            <div style="font-size:.88rem;font-weight:800;color:var(--txt)">Studi Kasus: Budi &amp; Sari</div>
+            <div style="font-size:.72rem;color:var(--muted);margin-top:1px">Contoh penerapan alokasi nyata</div>
+          </div>
+        </div>
+        <i class="fa-solid fa-chevron-down" id="akStudiChevron" style="font-size:.75rem;color:var(--muted);transition:transform .25s ease"></i>
+      </button>
+
+      <!-- STUDI KASUS (hidden by default) -->
+      <div id="akStudiWrap" style="display:none">
+      <div class="sc-wrap" style="margin-top:0;border-top:none;border-radius:0 0 var(--r-xl) var(--r-xl)">
+        <div class="sc-body">
+
+          <!-- Kebutuhan Pokok -->
+          <div class="sc-section">
+            <div class="sc-section-title">
+              <i class="fa-solid fa-house-chimney" style="color:var(--p);font-size:.88rem"></i>
+              <span>Kebutuhan Pokok 50% = <span style="color:var(--p)">Rp 3.500.000</span></span>
+            </div>
+            <table class="sc-table">
+              <thead><tr><th>Pos</th><th style="text-align:right">Nominal</th></tr></thead>
+              <tbody>
+                <tr><td>Kontrakan/kos</td><td>Rp 1.200.000</td></tr>
+                <tr><td>Makan &amp; dapur</td><td>Rp 1.000.000</td></tr>
+                <tr><td>Transportasi</td><td>Rp 500.000</td></tr>
+                <tr><td>Listrik &amp; air</td><td>Rp 300.000</td></tr>
+                <tr><td>Pulsa &amp; internet</td><td>Rp 200.000</td></tr>
+                <tr><td>Kebutuhan rumah tangga</td><td>Rp 300.000</td></tr>
+                <tr><td><strong>Total</strong></td><td><strong style="color:var(--p)">Rp 3.500.000</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Tabungan -->
+          <div class="sc-section">
+            <div class="sc-section-title">
+              <i class="fa-solid fa-piggy-bank" style="color:#2E63B5;font-size:.88rem"></i>
+              <span>Tabungan 20% = <span style="color:#2E63B5">Rp 1.400.000</span></span>
+            </div>
+            <table class="sc-table">
+              <thead><tr><th>Pos</th><th style="text-align:right">Nominal</th></tr></thead>
+              <tbody>
+                <tr><td>Dana darurat</td><td style="color:#2E63B5">Rp 700.000</td></tr>
+                <tr><td>Tabungan tujuan (DP rumah)</td><td style="color:#2E63B5">Rp 700.000</td></tr>
+                <tr><td><strong>Total</strong></td><td><strong style="color:#2E63B5">Rp 1.400.000</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Investasi -->
+          <div class="sc-section">
+            <div class="sc-section-title">
+              <i class="fa-solid fa-chart-line" style="color:var(--gold);font-size:.88rem"></i>
+              <span>Investasi 15% = <span style="color:var(--gold)">Rp 1.050.000</span></span>
+            </div>
+            <table class="sc-table">
+              <thead><tr><th>Instrumen</th><th style="text-align:right">Nominal</th></tr></thead>
+              <tbody>
+                <tr><td>Reksa dana syariah</td><td style="color:var(--gold)">Rp 500.000</td></tr>
+                <tr><td>Emas/logam mulia</td><td style="color:var(--gold)">Rp 350.000</td></tr>
+                <tr><td>Sukuk ritel</td><td style="color:var(--gold)">Rp 200.000</td></tr>
+                <tr><td><strong>Total</strong></td><td><strong style="color:var(--gold)">Rp 1.050.000</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Gaya Hidup -->
+          <div class="sc-section">
+            <div class="sc-section-title">
+              <i class="fa-solid fa-star" style="color:#684E92;font-size:.88rem"></i>
+              <span>Gaya Hidup 15% = <span style="color:#684E92">Rp 1.050.000</span></span>
+            </div>
+            <table class="sc-table">
+              <thead><tr><th>Pos</th><th style="text-align:right">Nominal</th></tr></thead>
+              <tbody>
+                <tr><td>Makan di luar/hiburan</td><td style="color:#684E92">Rp 400.000</td></tr>
+                <tr><td>Pakaian &amp; perawatan</td><td style="color:#684E92">Rp 300.000</td></tr>
+                <tr><td>Hobi</td><td style="color:#684E92">Rp 200.000</td></tr>
+                <tr><td>Sedekah</td><td style="color:#684E92">Rp 150.000</td></tr>
+                <tr><td><strong>Total</strong></td><td><strong style="color:#684E92">Rp 1.050.000</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Proyeksi -->
+          <div class="sc-section" style="margin-bottom:0">
+            <div class="sc-section-title">
+              <i class="fa-solid fa-calendar-check" style="color:var(--p);font-size:.88rem"></i>
+              <span>Proyeksi Akhir Tahun Pertama</span>
+            </div>
+            <div style="background:linear-gradient(135deg,#E8F5F0,#EEF6FF);border-radius:12px;padding:12px 16px;margin-bottom:12px;font-size:.82rem;color:var(--txt);line-height:1.7;border:1px solid rgba(27,107,90,.12)">
+              Tabungan <strong style="color:#2E63B5">Rp 16,8 juta</strong> + Investasi <strong style="color:var(--gold)">Rp 12,8 juta</strong> = Total aset <strong style="color:var(--p);font-size:.88rem">&plusmn;Rp 29,6 juta</strong>
+            </div>
+            <table class="sc-table sc-proj-table">
+              <thead><tr><th>Bulan</th><th style="text-align:right;color:#2E63B5">Tabungan</th><th style="text-align:right;color:var(--p)">Investasi (+5% p.a.)</th><th style="text-align:right;color:var(--gold)">Total Aset</th></tr></thead>
+              <tbody>
+                <tr><td>Bulan 3</td><td>Rp 4.200.000</td><td>Rp 3.163.000</td><td>Rp 7.363.000</td></tr>
+                <tr><td>Bulan 6</td><td>Rp 8.400.000</td><td>Rp 6.351.000</td><td>Rp 14.751.000</td></tr>
+                <tr><td>Bulan 9</td><td>Rp 12.600.000</td><td>Rp 9.564.000</td><td>Rp 22.164.000</td></tr>
+                <tr><td><strong>Bulan 12</strong></td><td>Rp 16.800.000</td><td>Rp 12.800.000</td><td><strong>Rp 29.600.000</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+      </div><!-- /akStudiWrap -->
+
+      <!-- KREDIT & CICILAN TOGGLE BTN -->
+      <button id="akKreditBtn" onclick="akToggleKredit()" style="width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px;padding:13px 18px;background:var(--card);border:1.5px solid var(--border);border-radius:var(--r-lg);cursor:pointer;font-family:var(--ff);transition:var(--tr);box-shadow:var(--sh-sm)">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:36px;height:36px;border-radius:10px;background:#FEF2F2;color:#B91C1C;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0"><i class="fa-solid fa-credit-card"></i></div>
+          <div style="text-align:left">
+            <div style="font-size:.88rem;font-weight:800;color:var(--txt)">Kredit &amp; Cicilan</div>
+            <div style="font-size:.72rem;color:var(--muted);margin-top:1px">Batas aman cicilan OJK &amp; risiko kredit macet</div>
+          </div>
+        </div>
+        <i class="fa-solid fa-chevron-down" id="akKreditChevron" style="font-size:.75rem;color:var(--muted);transition:transform .25s ease"></i>
+      </button>
+
+      <!-- KREDIT & CICILAN CONTENT (hidden by default) -->
+      <div id="akKreditWrap" style="display:none">
+
+      <!-- BATAS AMAN CICILAN OJK -->
+      <div class="sc-wrap" style="margin-top:0;border-radius:0;border-top:none;border-bottom:none">
+        <div class="sc-head">
+          <div class="sc-head-ico" style="background:#FFF7E6;color:#C8963E"><i class="fa-solid fa-shield-halved"></i></div>
+          <div>
+            <h3>Batas Aman Cicilan OJK</h3>
+            <p>Total cicilan utang maksimal <strong>30% dari penghasilan bulanan</strong></p>
+          </div>
+        </div>
+        <div class="sc-body">
+          <p style="font-size:.82rem;color:var(--txt);line-height:1.75;margin-bottom:14px">OJK menganjurkan agar seluruh cicilan yang dibayar setiap bulan sebaiknya tidak melebihi <strong>30% penghasilan</strong>. Berikut tabel referensinya:</p>
+
+          <table class="sc-table" style="margin-bottom:14px">
+            <thead>
+              <tr>
+                <th>Penghasilan/bulan</th>
+                <th style="text-align:right">Maks. total cicilan</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Rp 3.000.000</td><td style="text-align:right;color:#C8963E;font-weight:700">Rp 900.000</td></tr>
+              <tr><td>Rp 5.000.000</td><td style="text-align:right;color:#C8963E;font-weight:700">Rp 1.500.000</td></tr>
+              <tr><td>Rp 10.000.000</td><td style="text-align:right;color:#C8963E;font-weight:700">Rp 3.000.000</td></tr>
+            </tbody>
+          </table>
+
+          <div style="background:var(--gold-pale);border:1px solid rgba(200,150,62,.25);border-radius:var(--r-sm);padding:11px 14px;font-size:.78rem;color:var(--txt);line-height:1.65;margin-bottom:10px">
+            <strong style="color:var(--gold)">📐 Rumus:</strong> Maks. cicilan = <strong>30% × penghasilan bulanan</strong>
+          </div>
+
+          <div style="background:#F0F9FF;border:1px solid #BAE6FD;border-radius:var(--r-sm);padding:11px 14px;font-size:.76rem;color:#0369A1;line-height:1.65">
+            <i class="fa-solid fa-circle-info" style="margin-right:5px"></i><strong>Catatan:</strong> Angka 30% ini merupakan anjuran literasi/kemampuan keuangan OJK, bukan berarti ada satu aturan OJK yang secara umum melarang seseorang memiliki cicilan di atas 30%.
+          </div>
+        </div>
+      </div>
+
+      <!-- KREDIT MACET -->
+      <div class="sc-wrap" style="margin-top:0;border-radius:0 0 var(--r-xl) var(--r-xl);border-top:none">
+        <div class="sc-head">
+          <div class="sc-head-ico" style="background:#FEF2F2;color:#B91C1C"><i class="fa-solid fa-triangle-exclamation"></i></div>
+          <div>
+            <h3>Kredit Macet Dampak &amp; Pencegahan</h3>
+            <p>Pahami risiko sebelum mengajukan cicilan apapun</p>
+          </div>
+        </div>
+        <div class="sc-body">
+
+          <table class="sc-table sc-kredit-table" style="margin-bottom:16px">
+            <thead><tr><th>Skor</th><th>Status</th><th>Telat Bayar</th><th>Akibat</th></tr></thead>
+            <tbody>
+              <tr><td style="font-weight:700;color:var(--p)">Kol-1</td><td>Lancar</td><td>0 hari</td><td>Bebas ajukan pinjaman apapun</td></tr>
+              <tr><td style="font-weight:700;color:#F59E0B">Kol-2</td><td>Perhatian Khusus</td><td>1-90 hari</td><td>Mulai diawasi bank</td></tr>
+              <tr><td style="font-weight:700;color:#EA580C">Kol-3</td><td>Kurang Lancar</td><td>91-120 hari</td><td>Pengajuan kredit mulai ditolak</td></tr>
+              <tr><td style="font-weight:700;color:#DC2626">Kol-4</td><td>Diragukan</td><td>121-180 hari</td><td>Hampir semua bank menolak</td></tr>
+              <tr><td style="font-weight:700">Kol-5</td><td>Macet</td><td>&gt;180 hari</td><td>Blacklist total</td></tr>
+            </tbody>
+          </table>
+
+          <div style="font-size:.8rem;font-weight:700;color:#B91C1C;margin-bottom:8px"><i class="fa-solid fa-circle-xmark"></i> Bila sudah Kol-5:</div>
+          <div class="sc-dampak">
+            <div class="sc-dampak-item"><i class="fa-solid fa-xmark-circle" style="color:#B91C1C"></i><span>Semua pengajuan pinjaman ditolak bank &amp; lembaga keuangan</span></div>
+            <div class="sc-dampak-item"><i class="fa-solid fa-arrow-trend-up" style="color:#EA580C"></i><span>Bunga pinjaman masa depan lebih tinggi karena dianggap berisiko</span></div>
+            <div class="sc-dampak-item"><i class="fa-solid fa-house-circle-xmark" style="color:#B91C1C"></i><span>Aset jaminan (rumah/kendaraan) bisa disita dan dilelang</span></div>
+            <div class="sc-dampak-item"><i class="fa-solid fa-clock" style="color:#6B7280"></i><span>Catatan tidak langsung hilang meski sudah lunas tergantung kebijakan bank</span></div>
+            <div class="sc-dampak-item"><i class="fa-solid fa-heart-crack" style="color:#B91C1C"></i><span>Tekanan finansial akibat kredit macet memicu konflik rumah tangga</span></div>
+          </div>
+
+          <div class="sc-tips">
+            <i class="fa-solid fa-lightbulb" style="margin-top:1px;flex-shrink:0"></i>
+            <span><strong>Tips pencegahan:</strong> Selalu prioritaskan pos cicilan saat menerima gaji, dan bayar tagihan tepat waktu setiap bulannya.</span>
+          </div>
+
+        </div>
+      </div>
+      </div><!-- /akKreditWrap -->
+
       <!-- NOTE -->
       <div class="ak-note">
         <i class="fa-solid fa-circle-info"></i>
@@ -2386,7 +2592,7 @@
         </button>
         <button id="eduTab2" onclick="switchEduTab('live')" style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:11px 18px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);cursor:pointer;transition:var(--tr);font-family:var(--ff);outline:none">
           <div id="eduTab2Icon" style="width:28px;height:28px;min-width:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;background:#FFE8E8;color:#E05252;transition:var(--tr);flex-shrink:0"><i class="fa-brands fa-youtube"></i></div>
-          <span id="eduTab2Label" style="font-size:.79rem;font-weight:600;color:var(--muted);transition:var(--tr);white-space:nowrap">Live YouTube</span>
+          <span id="eduTab2Label" style="font-size:.79rem;font-weight:600;color:var(--muted);transition:var(--tr);white-space:nowrap">Live Video</span>
         </button>
       </div>
     </div>
@@ -2399,113 +2605,184 @@
     <!-- ══ TAB: MODUL EDUKASI ══ -->
     <div id="eduTab-modul" style="display:block">
 
-      <div style="margin-bottom:20px">
-        <div class="label-pill"><i class="fa-solid fa-star"></i> Materi Lengkap</div>
+      <div style="margin-bottom:24px">
+        <div class="label-pill"><i class="fa-solid fa-star"></i> 6 Part Materi</div>
         <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:6px">Modul Pernikahan &amp; Keluarga Islami</h2>
-        <p style="font-size:.88rem;color:var(--muted);line-height:1.7">Klik gambar di bawah untuk membaca isi materi secara lengkap.</p>
+        <p style="font-size:.88rem;color:var(--muted);line-height:1.7">Pilih salah satu part di bawah untuk membaca materi secara lengkap.</p>
       </div>
 
-      <!-- Card Modul - thumbnail halaman pertama buku, klik buka reader -->
-      <div onclick="openEduReader()" style="cursor:pointer;border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--sh-md);background:var(--card);border:1.5px solid var(--border);transition:var(--tr);display:flex;flex-direction:column"
-        onmouseover="this.style.boxShadow='var(--sh-lg)';this.style.borderColor='var(--p-light)'"
-        onmouseout="this.style.boxShadow='var(--sh-md)';this.style.borderColor='var(--border)'">
+      
 
-        <!-- Thumbnail -->
-        <div style="position:relative;width:100%;background:#f0f0f0;overflow:hidden;border-radius:var(--r-xl) var(--r-xl) 0 0">
-          <img loading="lazy"
-            src="https://drive.google.com/thumbnail?id=1vB6fDUDvP8EYkG9CHpviNq0FoDksR4Id&sz=w800"
-            alt="Halaman pertama Modul Edukasi RUKUN MAPAN"
-            style="width:100%;display:block;object-fit:cover;transition:transform .35s ease"
-            onmouseover="this.style.transform='scale(1.03)'"
-            onmouseout="this.style.transform='scale(1)'"
-            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
-          />
-          <!-- Fallback -->
-          <div style="display:none;width:100%;height:300px;background:linear-gradient(135deg,#0F3D34,#1B6B5A);align-items:center;justify-content:center;flex-direction:column;gap:12px">
-            <i class="fa-solid fa-book-open-reader" style="font-size:3rem;color:rgba(255,255,255,.5)"></i>
-            <span style="color:rgba(255,255,255,.6);font-size:.85rem">Modul Edukasi RUKUN MAPAN</span>
-          </div>
-          <!-- Overlay hover -->
-          <div class="edu-thumb-ov" style="position:absolute;inset:0;background:rgba(27,107,90,0);display:flex;align-items:center;justify-content:center;transition:background .3s">
-            <div class="edu-play-btn" style="width:68px;height:68px;border-radius:50%;background:rgba(255,255,255,.93);display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:var(--p);opacity:0;transform:scale(.75);transition:all .3s ease;box-shadow:0 8px 28px rgba(0,0,0,.22)">
-              <i class="fa-solid fa-book-open"></i>
+      <div class="edu-part-grid">
+
+        <!-- Part 1: Fikih Nikah -->
+        <div class="edu-part-card" onclick="openEduReader('1z_wwbnYdHRFvooAIk_uZTl4YR1XCgBDT','Part 1: Fikih Nikah')">
+          <div class="edu-part-thumb" style="background:linear-gradient(140deg,#134E4A 0%,#0D9488 60%,#2DD4BF 100%)">
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:16px;text-align:center">
+              <div style="width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:1.25rem;color:#fff"><i class="fa-solid fa-ring"></i></div>
+              <div style="font-size:.63rem;font-weight:700;color:rgba(255,255,255,.65);letter-spacing:.1em;text-transform:uppercase">Part 1</div>
+              <div style="font-size:.95rem;font-weight:800;color:#fff;line-height:1.3">Fikih Nikah</div>
             </div>
-          </div>
-          <!-- Badge -->
-          <div style="position:absolute;top:12px;right:12px;background:rgba(27,107,90,.88);color:#fff;font-size:.68rem;font-weight:700;padding:4px 11px;border-radius:99px;display:flex;align-items:center;gap:5px;backdrop-filter:blur(4px)">
-            <i class="fa-solid fa-file-pdf"></i> PDF Interaktif
+            <div class="edu-part-ov"><div class="edu-part-btn"><i class="fa-solid fa-book-open"></i></div></div>
           </div>
         </div>
 
-        <!-- Footer -->
-        <div style="padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px">
-          <div style="display:flex;align-items:center;gap:10px">
-            <div style="width:36px;height:36px;border-radius:10px;background:var(--bg-alt);display:flex;align-items:center;justify-content:center;font-size:.9rem;color:var(--p);flex-shrink:0"><i class="fa-solid fa-book-open-reader"></i></div>
-            <div>
-              <div style="font-size:.82rem;font-weight:700;color:var(--txt)">Panduan Lengkap Pernikahan &amp; Keluarga Islami</div>
-              <div style="font-size:.72rem;color:var(--muted);margin-top:2px">Klik untuk membaca selengkapnya</div>
+        <!-- Part 2: Membangun Keluarga Sakinah -->
+        <div class="edu-part-card" onclick="openEduReader('1Wn14D6LUois9J9Z3Ao0dPE4jIBycujzc','Part 2: Membangun Keluarga Sakinah')">
+          <div class="edu-part-thumb" style="background:linear-gradient(140deg,#78350F 0%,#D97706 60%,#FCD34D 100%)">
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:16px;text-align:center">
+              <div style="width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:1.25rem;color:#fff"><i class="fa-solid fa-heart"></i></div>
+              <div style="font-size:.63rem;font-weight:700;color:rgba(255,255,255,.65);letter-spacing:.1em;text-transform:uppercase">Part 2</div>
+              <div style="font-size:.95rem;font-weight:800;color:#fff;line-height:1.3">Membangun Keluarga Sakinah</div>
             </div>
-          </div>
-          <div style="background:var(--p);color:#fff;padding:9px 16px;border-radius:99px;font-size:.78rem;font-weight:700;display:flex;align-items:center;gap:6px;white-space:nowrap;flex-shrink:0">
-            <i class="fa-solid fa-book-open"></i> Baca
+            <div class="edu-part-ov"><div class="edu-part-btn"><i class="fa-solid fa-book-open"></i></div></div>
           </div>
         </div>
-      </div>
+
+        <!-- Part 3: Dinamika & Komunikasi Perkawinan -->
+        <div class="edu-part-card" onclick="openEduReader('1osgbo6I_IhIAN_1wuh4Zp_XJCHGA11RG','Part 3: Dinamika &amp; Komunikasi Perkawinan')">
+          <div class="edu-part-thumb" style="background:linear-gradient(140deg,#1E3A5F 0%,#2563EB 60%,#60A5FA 100%)">
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:16px;text-align:center">
+              <div style="width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:1.25rem;color:#fff"><i class="fa-solid fa-comments"></i></div>
+              <div style="font-size:.63rem;font-weight:700;color:rgba(255,255,255,.65);letter-spacing:.1em;text-transform:uppercase">Part 3</div>
+              <div style="font-size:.95rem;font-weight:800;color:#fff;line-height:1.3">Dinamika &amp; Komunikasi Perkawinan</div>
+            </div>
+            <div class="edu-part-ov"><div class="edu-part-btn"><i class="fa-solid fa-book-open"></i></div></div>
+          </div>
+        </div>
+
+        <!-- Part 4: Keuangan Keluarga -->
+        <div class="edu-part-card" onclick="openEduReader('1yJcYXf-9qPUw0m06P2z_iSkx0QsmCVaj','Part 4: Keuangan Keluarga')">
+          <div class="edu-part-thumb" style="background:linear-gradient(140deg,#064E3B 0%,#059669 60%,#34D399 100%)">
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:16px;text-align:center">
+              <div style="width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:1.25rem;color:#fff"><i class="fa-solid fa-coins"></i></div>
+              <div style="font-size:.63rem;font-weight:700;color:rgba(255,255,255,.65);letter-spacing:.1em;text-transform:uppercase">Part 4</div>
+              <div style="font-size:.95rem;font-weight:800;color:#fff;line-height:1.3">Keuangan Keluarga</div>
+            </div>
+            <div class="edu-part-ov"><div class="edu-part-btn"><i class="fa-solid fa-book-open"></i></div></div>
+          </div>
+        </div>
+
+        <!-- Part 5: Kesehatan Reproduksi & Generasi -->
+        <div class="edu-part-card" onclick="openEduReader('1DbrNPH2hp6AaBoEaeboCKDQrrhV7NzW6','Part 5: Kesehatan Reproduksi &amp; Generasi')">
+          <div class="edu-part-thumb" style="background:linear-gradient(140deg,#881337 0%,#E11D48 60%,#FB7185 100%)">
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:16px;text-align:center">
+              <div style="width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:1.25rem;color:#fff"><i class="fa-solid fa-heart-pulse"></i></div>
+              <div style="font-size:.63rem;font-weight:700;color:rgba(255,255,255,.65);letter-spacing:.1em;text-transform:uppercase">Part 5</div>
+              <div style="font-size:.95rem;font-weight:800;color:#fff;line-height:1.3">Kesehatan Reproduksi &amp; Generasi</div>
+            </div>
+            <div class="edu-part-ov"><div class="edu-part-btn"><i class="fa-solid fa-book-open"></i></div></div>
+          </div>
+        </div>
+
+        <!-- Part 6: Tantangan & Administrasi Nikah -->
+        <div class="edu-part-card" onclick="openEduReader('1-q8PuTKHLxo4HwAiUPwkR32COAwlMufC','Part 6: Tantangan &amp; Administrasi Nikah')">
+          <div class="edu-part-thumb" style="background:linear-gradient(140deg,#3B0764 0%,#7C3AED 60%,#A78BFA 100%)">
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:16px;text-align:center">
+              <div style="width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:1.25rem;color:#fff"><i class="fa-solid fa-file-contract"></i></div>
+              <div style="font-size:.63rem;font-weight:700;color:rgba(255,255,255,.65);letter-spacing:.1em;text-transform:uppercase">Part 6</div>
+              <div style="font-size:.95rem;font-weight:800;color:#fff;line-height:1.3">Tantangan &amp; Administrasi Nikah</div>
+            </div>
+            <div class="edu-part-ov"><div class="edu-part-btn"><i class="fa-solid fa-book-open"></i></div></div>
+          </div>
+        </div>
+
+      </div><!-- /edu-part-grid -->
 
     </div>
 
-    <!-- ══ TAB: LIVE YOUTUBE ══ -->
+    <!-- ══ TAB: LIVE VIDEO ══ -->
     <div id="eduTab-live" style="display:none">
 
       <div style="margin-bottom:20px">
-        <div class="label-pill"><i class="fa-brands fa-youtube" style="color:#E05252"></i> Kajian Video</div>
-        <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:6px">Kajian YouTube</h2>
-        <p style="font-size:.88rem;color:var(--muted);line-height:1.7">Klik gambar di bawah untuk menonton kajian di YouTube.</p>
+        <div class="label-pill"><i class="fa-brands fa-youtube" style="color:#E05252"></i> Live Video</div>
+        <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:6px">Live Video Bimbingan Perkawinan</h2>
+        <p style="font-size:.88rem;color:var(--muted);line-height:1.7">Klik untuk menonton video kajian di YouTube.</p>
       </div>
 
-      <!-- Card YouTube - thumbnail, klik buka YouTube -->
-      <a href="https://www.youtube.com/live/Vgr9XH2g398?si=4hP5NjD-E8oxE-Bv" target="_blank" rel="noopener"
-        style="display:flex;flex-direction:column;border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--sh-md);background:var(--card);border:1.5px solid var(--border);text-decoration:none;color:inherit;transition:var(--tr)"
-        onmouseover="this.style.boxShadow='var(--sh-lg)';this.style.borderColor='#FF0000'"
-        onmouseout="this.style.boxShadow='var(--sh-md)';this.style.borderColor='var(--border)'">
+      <div style="display:flex;flex-direction:column;gap:14px">
 
-        <!-- Thumbnail -->
-        <div style="position:relative;width:100%;background:#111;overflow:hidden;border-radius:var(--r-xl) var(--r-xl) 0 0">
-          <img loading="lazy"
-            src="https://drive.google.com/thumbnail?id=1dSGvsoGAZWJLmb9b0Dy_gUcH0FlySMs9&sz=w800"
-            alt="Kajian YouTube RUKUN MAPAN"
-            style="width:100%;display:block;object-fit:cover;transition:transform .35s ease"
-            onmouseover="this.style.transform='scale(1.03)'"
-            onmouseout="this.style.transform='scale(1)'"
-            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
-          />
-          <!-- Fallback -->
-          <div style="display:none;width:100%;height:300px;background:linear-gradient(135deg,#1a0000,#7a1212);align-items:center;justify-content:center;flex-direction:column;gap:12px">
-            <i class="fa-brands fa-youtube" style="font-size:3rem;color:rgba(255,100,100,.6)"></i>
-            <span style="color:rgba(255,255,255,.5);font-size:.85rem">Kajian YouTube</span>
-          </div>
-          <!-- Overlay + tombol play merah selalu tampil -->
-          <div style="position:absolute;inset:0;background:rgba(0,0,0,.22);display:flex;align-items:center;justify-content:center">
-            <div style="width:68px;height:68px;border-radius:50%;background:#FF0000;display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:#fff;box-shadow:0 8px 28px rgba(255,0,0,.5)">
-              <i class="fa-brands fa-youtube"></i>
+        <!-- Video 1 -->
+        <a href="https://www.youtube.com/live/Vgr9XH2g398?si=4hP5NjD-E8oxE-Bv" target="_blank" rel="noopener"
+          style="display:flex;align-items:center;gap:14px;border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh-sm);background:var(--card);border:1.5px solid var(--border);text-decoration:none;color:inherit;transition:var(--tr);padding:10px"
+          onmouseover="this.style.boxShadow='var(--sh-md)';this.style.borderColor='#FF0000'"
+          onmouseout="this.style.boxShadow='var(--sh-sm)';this.style.borderColor='var(--border)'">
+          <div style="position:relative;flex-shrink:0;width:110px;height:68px;border-radius:10px;overflow:hidden;background:#111">
+            <img loading="lazy" src="https://img.youtube.com/vi/Vgr9XH2g398/mqdefault.jpg" alt="Live Video 1"
+              style="width:100%;height:100%;object-fit:cover;display:block"
+              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+            <div style="display:none;width:100%;height:100%;background:#1a0000;align-items:center;justify-content:center"><i class="fa-brands fa-youtube" style="color:rgba(255,100,100,.6);font-size:1.4rem"></i></div>
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+              <div style="width:32px;height:32px;border-radius:50%;background:#FF0000;display:flex;align-items:center;justify-content:center;font-size:.8rem;color:#fff;box-shadow:0 4px 12px rgba(255,0,0,.5)"><i class="fa-solid fa-play"></i></div>
             </div>
           </div>
-        </div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:.8rem;font-weight:700;color:var(--txt);line-height:1.4;margin-bottom:4px">Kajian Bimbingan Perkawinan di KUA Kragan</div>
+            <div style="font-size:.7rem;color:var(--muted);display:flex;align-items:center;gap:5px"><i class="fa-brands fa-youtube" style="color:#FF0000"></i> Tonton di YouTube</div>
+          </div>
+        </a>
 
-        <!-- Footer -->
-        <div style="padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px">
-          <div style="display:flex;align-items:center;gap:10px">
-            <div style="width:36px;height:36px;border-radius:50%;background:#FFF0F0;display:flex;align-items:center;justify-content:center;font-size:1rem;color:#FF0000;flex-shrink:0"><i class="fa-brands fa-youtube"></i></div>
-            <div>
-              <div style="font-size:.82rem;font-weight:700;color:var(--txt)">@mariyadlotutthalabah</div>
-              <div style="font-size:.72rem;color:var(--muted);margin-top:2px">Klik untuk menonton di YouTube</div>
+        <!-- Video 2 -->
+        <a href="https://www.youtube.com/live/reVgRk76x90?si=RxkpGpw-hbcMy0lc" target="_blank" rel="noopener"
+          style="display:flex;align-items:center;gap:14px;border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh-sm);background:var(--card);border:1.5px solid var(--border);text-decoration:none;color:inherit;transition:var(--tr);padding:10px"
+          onmouseover="this.style.boxShadow='var(--sh-md)';this.style.borderColor='#FF0000'"
+          onmouseout="this.style.boxShadow='var(--sh-sm)';this.style.borderColor='var(--border)'">
+          <div style="position:relative;flex-shrink:0;width:110px;height:68px;border-radius:10px;overflow:hidden;background:#111">
+            <img loading="lazy" src="https://img.youtube.com/vi/reVgRk76x90/mqdefault.jpg" alt="Live Video 2"
+              style="width:100%;height:100%;object-fit:cover;display:block"
+              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+            <div style="display:none;width:100%;height:100%;background:#1a0000;align-items:center;justify-content:center"><i class="fa-brands fa-youtube" style="color:rgba(255,100,100,.6);font-size:1.4rem"></i></div>
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+              <div style="width:32px;height:32px;border-radius:50%;background:#FF0000;display:flex;align-items:center;justify-content:center;font-size:.8rem;color:#fff;box-shadow:0 4px 12px rgba(255,0,0,.5)"><i class="fa-solid fa-play"></i></div>
             </div>
           </div>
-          <div style="background:#FF0000;color:#fff;padding:9px 16px;border-radius:99px;font-size:.78rem;font-weight:700;display:flex;align-items:center;gap:6px;white-space:nowrap;flex-shrink:0">
-            <i class="fa-solid fa-play"></i> Tonton
+          <div style="flex:1;min-width:0">
+            <div style="font-size:.8rem;font-weight:700;color:var(--txt);line-height:1.4;margin-bottom:4px">Kajian Bimbingan Perkawinan di KUA Sedan</div>
+            <div style="font-size:.7rem;color:var(--muted);display:flex;align-items:center;gap:5px"><i class="fa-brands fa-youtube" style="color:#FF0000"></i> Tonton di YouTube</div>
           </div>
-        </div>
-      </a>
+        </a>
+
+        <!-- Video 3 -->
+        <a href="https://www.youtube.com/live/uaeImdw16qo?si=fCqN9G2wZUGW0CeN" target="_blank" rel="noopener"
+          style="display:flex;align-items:center;gap:14px;border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh-sm);background:var(--card);border:1.5px solid var(--border);text-decoration:none;color:inherit;transition:var(--tr);padding:10px"
+          onmouseover="this.style.boxShadow='var(--sh-md)';this.style.borderColor='#FF0000'"
+          onmouseout="this.style.boxShadow='var(--sh-sm)';this.style.borderColor='var(--border)'">
+          <div style="position:relative;flex-shrink:0;width:110px;height:68px;border-radius:10px;overflow:hidden;background:#111">
+            <img loading="lazy" src="https://img.youtube.com/vi/uaeImdw16qo/mqdefault.jpg" alt="Live Video 3"
+              style="width:100%;height:100%;object-fit:cover;display:block"
+              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+            <div style="display:none;width:100%;height:100%;background:#1a0000;align-items:center;justify-content:center"><i class="fa-brands fa-youtube" style="color:rgba(255,100,100,.6);font-size:1.4rem"></i></div>
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+              <div style="width:32px;height:32px;border-radius:50%;background:#FF0000;display:flex;align-items:center;justify-content:center;font-size:.8rem;color:#fff;box-shadow:0 4px 12px rgba(255,0,0,.5)"><i class="fa-solid fa-play"></i></div>
+            </div>
+          </div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:.8rem;font-weight:700;color:var(--txt);line-height:1.4;margin-bottom:4px">Kajian Bimbingan Perkawinan di KUA Sarang</div>
+            <div style="font-size:.7rem;color:var(--muted);display:flex;align-items:center;gap:5px"><i class="fa-brands fa-youtube" style="color:#FF0000"></i> Tonton di YouTube</div>
+          </div>
+        </a>
+
+        <!-- Video 4 -->
+        <a href="https://www.youtube.com/live/iyzZuPz6JO0?si=nqoQ33uuH9WF0MNL" target="_blank" rel="noopener"
+          style="display:flex;align-items:center;gap:14px;border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh-sm);background:var(--card);border:1.5px solid var(--border);text-decoration:none;color:inherit;transition:var(--tr);padding:10px"
+          onmouseover="this.style.boxShadow='var(--sh-md)';this.style.borderColor='#FF0000'"
+          onmouseout="this.style.boxShadow='var(--sh-sm)';this.style.borderColor='var(--border)'">
+          <div style="position:relative;flex-shrink:0;width:110px;height:68px;border-radius:10px;overflow:hidden;background:#111">
+            <img loading="lazy" src="https://img.youtube.com/vi/iyzZuPz6JO0/mqdefault.jpg" alt="Live Video 4"
+              style="width:100%;height:100%;object-fit:cover;display:block"
+              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+            <div style="display:none;width:100%;height:100%;background:#1a0000;align-items:center;justify-content:center"><i class="fa-brands fa-youtube" style="color:rgba(255,100,100,.6);font-size:1.4rem"></i></div>
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+              <div style="width:32px;height:32px;border-radius:50%;background:#FF0000;display:flex;align-items:center;justify-content:center;font-size:.8rem;color:#fff;box-shadow:0 4px 12px rgba(255,0,0,.5)"><i class="fa-solid fa-play"></i></div>
+            </div>
+          </div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:.8rem;font-weight:700;color:var(--txt);line-height:1.4;margin-bottom:4px">Kajian Bimbingan Perkawinan di KUA Pamotan</div>
+            <div style="font-size:.7rem;color:var(--muted);display:flex;align-items:center;gap:5px"><i class="fa-brands fa-youtube" style="color:#FF0000"></i> Tonton di YouTube</div>
+          </div>
+        </a>
+
+      </div>
 
     </div>
 
@@ -2520,7 +2797,7 @@
     <div style="display:flex;align-items:center;gap:10px">
       <div style="width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:.85rem;color:#fff"><i class="fa-solid fa-book-open-reader"></i></div>
       <div>
-        <div style="font-size:.82rem;font-weight:700;color:#fff;line-height:1.2">Modul Edukasi Interaktif</div>
+        <div id="eduReaderTitle" style="font-size:.82rem;font-weight:700;color:#fff;line-height:1.2">Modul Edukasi Interaktif</div>
         <div style="font-size:.68rem;color:rgba(255,255,255,.55)">RUKUN MAPAN</div>
       </div>
     </div>
@@ -2530,11 +2807,17 @@
   </div>
   <!-- iFrame PDF viewer -->
   <div style="flex:1;overflow:hidden;position:relative">
+    <div id="eduReaderLoading" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:#111;z-index:2;pointer-events:none">
+      
+      <div style="width:36px;height:36px;border-radius:50%;border:3px solid rgba(255,255,255,.15);border-top-color:rgba(255,255,255,.7);animation:eduSpin .8s linear infinite"></div>
+      <span style="font-size:.78rem;color:rgba(255,255,255,.45)">Memuat materi...</span>
+    </div>
     <iframe id="eduReaderFrame"
       src=""
-      style="width:100%;height:100%;border:none;display:block"
+      style="width:100%;height:100%;border:none;display:block;pointer-events:none"
       allow="autoplay"
-      title="Modul Edukasi RUKUN MAPAN Reader">
+      title="Modul Edukasi RUKUN MAPAN Reader"
+      onload="var l=document.getElementById('eduReaderLoading');if(l&&this.src)l.style.display='none';">
     </iframe>
   </div>
 </div>
@@ -2568,7 +2851,7 @@
             <div class="step"><div class="step-num">04</div><div class="step-txt"><h4>Monitor & Berkembang Bersama</h4><p>Pantau perkembangan keluarga melalui Dashboard SDGs dan tingkatkan kesejahteraan berkelanjutan secara konsisten bersama pasangan.</p></div></div>
           </div>
           <div style="margin-top:28px">
-            <button class="btn btn-primary" onclick="openAuth('daftar')"><i class="fa-solid fa-rocket"></i> Mulai Sekarang - Gratis</button>
+            <button data-cta-daftar="1" class="btn btn-primary" onclick="openAuth('daftar')"><i class="fa-solid fa-rocket"></i> Mulai Sekarang - Gratis</button>
           </div>
         </div>
         <div>
@@ -2625,7 +2908,7 @@
         <h2>Siap Memulai?</h2>
         <p>Daftarkan diri gratis dan mulai perjalanan menuju keluarga yang sakinah, mawaddah, warahmah.</p>
         <div class="acts">
-          <button class="btn btn-gold" onclick="openAuth('daftar')"><i class="fa-solid fa-rocket"></i> Daftar Sekarang</button>
+          <button data-cta-daftar="1" class="btn btn-gold" onclick="openAuth('daftar')"><i class="fa-solid fa-rocket"></i> Daftar Sekarang</button>
           <button class="btn btn-ghost" onclick="goPage('kontak')"><i class="fa-solid fa-envelope"></i> Hubungi Kami</button>
         </div>
       </div>
@@ -2660,9 +2943,13 @@
               <div class="ki-ico" style="background:#E8FFF1;color:#25D366"><i class="fa-brands fa-whatsapp"></i></div>
               <div class="ki-txt"><label>WhatsApp</label><p>085712016662</p></div>
             </a>
-            <a href="mailto:azka.mubrok@gmail.com" target="_blank" rel="noopener" class="kinfo-card" style="text-decoration:none;color:inherit;display:flex;cursor:pointer;transition:var(--tr)" onmouseover="this.style.boxShadow='var(--sh-md)';this.style.borderColor='rgba(214,41,118,.3)'" onmouseout="this.style.boxShadow='';this.style.borderColor=''">
+            <a href="https://www.instagram.com/baroque.xm" target="_blank" rel="noopener" class="kinfo-card" style="text-decoration:none;color:inherit;display:flex;cursor:pointer;transition:var(--tr)" onmouseover="this.style.boxShadow='var(--sh-md)';this.style.borderColor='rgba(214,41,118,.3)'" onmouseout="this.style.boxShadow='';this.style.borderColor=''">
               <div class="ki-ico" style="background:#FFF0F7;color:#D62976"><i class="fa-brands fa-instagram"></i></div>
-              <div class="ki-txt"><label>Instagram / Email</label><p>azka.mubrok@gmail.com</p></div>
+              <div class="ki-txt"><label>Instagram</label><p>@baroque.xm</p></div>
+            </a>
+            <a href="mailto:azka.mubrok@gmail.com" class="kinfo-card" style="text-decoration:none;color:inherit;display:flex;cursor:pointer;transition:var(--tr)" onmouseover="this.style.boxShadow='var(--sh-md)';this.style.borderColor='rgba(27,107,90,.3)'" onmouseout="this.style.boxShadow='';this.style.borderColor=''">
+              <div class="ki-ico" style="background:#E8F5F0;color:var(--p)"><i class="fa-solid fa-envelope"></i></div>
+              <div class="ki-txt"><label>Email</label><p>azka.mubrok@gmail.com</p></div>
             </a>
             <a href="https://www.youtube.com/live/Vgr9XH2g398?si=4hP5NjD-E8oxE-Bv" target="_blank" rel="noopener" class="kinfo-card" style="text-decoration:none;color:inherit;display:flex;cursor:pointer;transition:var(--tr)" onmouseover="this.style.boxShadow='var(--sh-md)';this.style.borderColor='rgba(255,0,0,.3)'" onmouseout="this.style.boxShadow='';this.style.borderColor=''">
               <div class="ki-ico" style="background:#FFF0F0;color:#FF0000"><i class="fa-brands fa-youtube"></i></div>
@@ -2677,7 +2964,7 @@
             <p style="font-size:.8rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px">Ikuti Kami</p>
             <div class="social-row">
               <a href="https://wa.me/6285712016662" target="_blank" rel="noopener"><div class="soc-btn" title="WhatsApp" style="background:#E8FFF1;color:#25D366"><i class="fa-brands fa-whatsapp"></i></div></a>
-              <a href="mailto:azka.mubrok@gmail.com" target="_blank" rel="noopener"><div class="soc-btn" title="Instagram" style="background:#FFF0F7;color:#D62976"><i class="fa-brands fa-instagram"></i></div></a>
+              <a href="https://www.instagram.com/baroque.xm" target="_blank" rel="noopener"><div class="soc-btn" title="Instagram" style="background:#FFF0F7;color:#D62976"><i class="fa-brands fa-instagram"></i></div></a>
               <a href="https://www.youtube.com/live/Vgr9XH2g398?si=4hP5NjD-E8oxE-Bv" target="_blank" rel="noopener"><div class="soc-btn" title="YouTube" style="background:#FFF0F0;color:#FF0000"><i class="fa-brands fa-youtube"></i></div></a>
               <a href="https://www.tiktok.com/@_azro1" target="_blank" rel="noopener"><div class="soc-btn" title="TikTok" style="background:#F0F0F0;color:#010101"><i class="fa-brands fa-tiktok"></i></div></a>
             </div>
@@ -2782,8 +3069,7 @@
           <div class="sdgk-dek-icon"><i class="fa-solid fa-earth-asia"></i></div>
           <div style="flex:1;min-width:0">
             <div class="sdgk-dek-label">Deklarasi Komitmen Keluarga</div>
-            <p class="sdgk-dek-text">Saya berkomitmen sebagai bagian dari keluarga Indonesia untuk mendukung <strong>Tujuan Pembangunan Berkelanjutan (SDGs)</strong> - dengan membangun keluarga yang sehat, berpendidikan, bermartabat, dan berkontribusi nyata pada kesejahteraan masyarakat, sesuai nilai Islam yang <em>rahmatan lil 'alamin</em>.</p>
-            <div class="sdgk-dek-quote">"Dan jadilah kamu tolong-menolong dalam kebaikan dan takwa." - QS. Al-Maidah: 2</div>
+            <p class="sdgk-dek-text">Saya berkomitmen sebagai bagian dari keluarga Indonesia untuk mendukung <strong>Tujuan Pembangunan Berkelanjutan (SDGs)</strong> dengan membangun keluarga yang sehat, berpendidikan, bermartabat, dan berkontribusi nyata pada kesejahteraan masyarakat.</p>
           </div>
         </div>
 
@@ -2896,6 +3182,230 @@
 <!-- =========================================
      FOOTER (shared)
 ========================================= -->
+<!-- =========================================
+     LEGAL PAGES - shared CSS override
+========================================= -->
+
+
+<!-- =========================================
+     PAGE: KEBIJAKAN PRIVASI
+========================================= -->
+<div class="page" id="page-privasi">
+  <div class="lp-hero" style="background:linear-gradient(135deg,var(--p-dark),var(--p))">
+    <div class="geo-bg" style="opacity:.18"></div>
+    <div class="lp-hero-inner container">
+      <button class="lp-hero-back" onclick="history.back()"><i class="fa-solid fa-arrow-left"></i> Kembali</button>
+      <div class="lp-hero-icon"><i class="fa-solid fa-shield-halved"></i></div>
+      <h1>Kebijakan Privasi</h1>
+      <p>Rukun Mapan · Berlaku mulai 20 Agustus 2026</p>
+    </div>
+  </div>
+  <div class="lp-wrap">
+    <div class="lp-section">
+      <div class="lp-s-head">
+        <div class="lp-num lp-num-green">1</div>
+        <div class="lp-s-title">Data yang Kami Kumpulkan</div>
+      </div>
+      <div class="lp-s-body lp-dot-green">
+        <p>Saat Anda mendaftar atau menggunakan Rukun Mapan, kami menyimpan beberapa data berikut:</p>
+        <ul>
+          <li>Alamat email dan nama yang Anda daftarkan</li>
+          <li>Preferensi dan jawaban yang Anda isi pada fitur Roadmap Keluarga dan Dashboard SDG</li>
+          <li>Data sesi login (token autentikasi)</li>
+          <li>Aktivitas umum di dalam platform (halaman yang dikunjungi, fitur yang digunakan)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="lp-section">
+      <div class="lp-s-head">
+        <div class="lp-num lp-num-green">2</div>
+        <div class="lp-s-title">Cara Kami Menggunakan Data</div>
+      </div>
+      <div class="lp-s-body lp-dot-green">
+        <p>Data Anda digunakan semata-mata untuk keperluan berikut:</p>
+        <ul>
+          <li>Menjalankan dan meningkatkan layanan Rukun Mapan</li>
+          <li>Menyimpan kemajuan dan preferensi Anda agar tidak hilang saat kembali login</li>
+          <li>Mengirimkan informasi terkait layanan jika Anda memberikan izin</li>
+        </ul>
+      </div>
+    </div>
+    <div class="lp-section">
+      <div class="lp-s-head">
+        <div class="lp-num lp-num-green">3</div>
+        <div class="lp-s-title">Penyimpanan Data</div>
+      </div>
+      <div class="lp-s-body">
+        <p>Data Anda disimpan menggunakan layanan Supabase, sebuah platform database yang aman dan terenkripsi. Data tidak pernah dijual, disewakan, atau diberikan kepada pihak ketiga untuk tujuan komersial.</p>
+        <div class="lp-note lp-note-green"><i class="fa-solid fa-lock" style="margin-right:8px"></i>Seluruh data dikirim melalui koneksi terenkripsi (HTTPS/TLS) dan disimpan dalam server yang terlindungi.</div>
+      </div>
+    </div>
+    <div class="lp-section">
+      <div class="lp-s-head">
+        <div class="lp-num lp-num-green">4</div>
+        <div class="lp-s-title">Hak Pengguna</div>
+      </div>
+      <div class="lp-s-body lp-dot-green">
+        <p>Sebagai pengguna, Anda berhak untuk:</p>
+        <ul>
+          <li>Meminta akses ke data pribadi yang kami simpan</li>
+          <li>Meminta penghapusan akun dan seluruh data terkait</li>
+          <li>Menghubungi kami melalui halaman Kontak untuk pertanyaan seputar privasi</li>
+        </ul>
+      </div>
+    </div>
+    <div class="lp-section">
+      <div class="lp-s-head">
+        <div class="lp-num lp-num-green">5</div>
+        <div class="lp-s-title">Perubahan Kebijakan</div>
+      </div>
+      <div class="lp-s-body">
+        <p>Jika ada perubahan signifikan pada kebijakan ini, kami akan memberikan pemberitahuan melalui platform. Penggunaan layanan setelah perubahan berlaku dianggap sebagai persetujuan terhadap kebijakan yang diperbarui.</p>
+      </div>
+    </div>
+    <div class="lp-footer">
+      <span class="lp-footer-date"><i class="fa-regular fa-calendar" style="margin-right:6px"></i>Terakhir diperbarui: 20 Agustus 2026</span>
+      <button class="lp-back-btn" style="background:linear-gradient(135deg,var(--p),var(--p-light));color:#fff;box-shadow:0 4px 14px rgba(27,107,90,.3)" onclick="history.back()"><i class="fa-solid fa-arrow-left"></i> Kembali</button>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================
+     PAGE: SYARAT & KETENTUAN
+========================================= -->
+<div class="page" id="page-ketentuan">
+  <div class="lp-hero" style="background:linear-gradient(135deg,#7A5A1E,#C8963E)">
+    <div class="geo-bg" style="opacity:.18"></div>
+    <div class="lp-hero-inner container">
+      <button class="lp-hero-back" onclick="history.back()"><i class="fa-solid fa-arrow-left"></i> Kembali</button>
+      <div class="lp-hero-icon"><i class="fa-solid fa-file-contract"></i></div>
+      <h1>Syarat &amp; Ketentuan</h1>
+      <p>Rukun Mapan · Berlaku mulai 20 Agustus 2026</p>
+    </div>
+  </div>
+  <div class="lp-wrap">
+    <div class="lp-section">
+      <div class="lp-s-head">
+        <div class="lp-num lp-num-gold">1</div>
+        <div class="lp-s-title">Penerimaan Ketentuan</div>
+      </div>
+      <div class="lp-s-body">
+        <p>Dengan mengakses atau menggunakan Rukun Mapan, Anda menyatakan telah membaca, memahami, dan menyetujui syarat dan ketentuan ini. Jika tidak setuju, harap hentikan penggunaan platform.</p>
+      </div>
+    </div>
+    <div class="lp-section">
+      <div class="lp-s-head">
+        <div class="lp-num lp-num-gold">2</div>
+        <div class="lp-s-title">Kelayakan Pengguna</div>
+      </div>
+      <div class="lp-s-body">
+        <p>Platform ini ditujukan untuk pengguna berusia minimal 18 tahun atau yang telah menikah. Pengguna bertanggung jawab memastikan bahwa informasi yang didaftarkan adalah benar dan akurat.</p>
+      </div>
+    </div>
+    <div class="lp-section">
+      <div class="lp-s-head">
+        <div class="lp-num lp-num-gold">3</div>
+        <div class="lp-s-title">Penggunaan yang Diperbolehkan</div>
+      </div>
+      <div class="lp-s-body lp-dot-gold">
+        <p>Anda boleh menggunakan Rukun Mapan untuk keperluan pribadi dan edukasi. Penggunaan yang tidak diperbolehkan meliputi:</p>
+        <ul>
+          <li>Menyalahgunakan fitur platform untuk tujuan penipuan atau merugikan orang lain</li>
+          <li>Mencoba mengakses data pengguna lain tanpa izin</li>
+          <li>Mendistribusikan konten platform secara komersial tanpa izin tertulis</li>
+        </ul>
+      </div>
+    </div>
+    <div class="lp-section">
+      <div class="lp-s-head">
+        <div class="lp-num lp-num-gold">4</div>
+        <div class="lp-s-title">Konten dan Informasi</div>
+      </div>
+      <div class="lp-s-body">
+        <p>Seluruh konten di Rukun Mapan, termasuk artikel, simulasi, dan panduan, bersifat informatif dan edukatif. Konten ini bukan pengganti nasihat hukum, agama, atau keuangan dari profesional yang berwenang.</p>
+        <div class="lp-note lp-note-gold"><i class="fa-solid fa-circle-info" style="margin-right:8px"></i>Simulasi biaya nikah dan roadmap keuangan adalah estimasi. Hasil nyata dapat berbeda tergantung kondisi masing-masing keluarga.</div>
+      </div>
+    </div>
+    <div class="lp-section">
+      <div class="lp-s-head">
+        <div class="lp-num lp-num-gold">5</div>
+        <div class="lp-s-title">Batasan Tanggung Jawab</div>
+      </div>
+      <div class="lp-s-body">
+        <p>Rukun Mapan tidak bertanggung jawab atas kerugian yang timbul akibat keputusan yang diambil berdasarkan informasi di platform ini. Layanan disediakan sebagaimana adanya tanpa jaminan ketersediaan 100% setiap saat.</p>
+      </div>
+    </div>
+    <div class="lp-section">
+      <div class="lp-s-head">
+        <div class="lp-num lp-num-gold">6</div>
+        <div class="lp-s-title">Penghentian Akun</div>
+      </div>
+      <div class="lp-s-body">
+        <p>Kami berhak menangguhkan atau menghapus akun yang terbukti melanggar ketentuan ini. Pengguna juga dapat menghapus akun kapan saja melalui menu pengaturan atau dengan menghubungi tim kami.</p>
+      </div>
+    </div>
+    <div class="lp-footer">
+      <span class="lp-footer-date"><i class="fa-regular fa-calendar" style="margin-right:6px"></i>Terakhir diperbarui: 20 Agustus 2026</span>
+      <button class="lp-back-btn" style="background:linear-gradient(135deg,var(--gold),var(--gold-l));color:#fff;box-shadow:0 4px 14px rgba(200,150,62,.32)" onclick="history.back()"><i class="fa-solid fa-arrow-left"></i> Kembali</button>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================
+     PAGE: KEBIJAKAN COOKIE
+========================================= -->
+<div class="page" id="page-cookie">
+  <div class="lp-hero" style="background:linear-gradient(135deg,#4A3875,#7B5EA7)">
+    <div class="geo-bg" style="opacity:.18"></div>
+    <div class="lp-hero-inner container">
+      <button class="lp-hero-back" onclick="history.back()"><i class="fa-solid fa-arrow-left"></i> Kembali</button>
+      <div class="lp-hero-icon"><i class="fa-solid fa-cookie-bite"></i></div>
+      <h1>Kebijakan Cookie</h1>
+      <p>Rukun Mapan · Berlaku mulai 20 Agustus 2026</p>
+    </div>
+  </div>
+  <div class="lp-wrap">
+    <div class="lp-section">
+      <div class="lp-s-head">
+        <div class="lp-num lp-num-purple">1</div>
+        <div class="lp-s-title">Apa Itu Cookie?</div>
+      </div>
+      <div class="lp-s-body">
+        <p>Cookie adalah file teks kecil yang disimpan di perangkat Anda saat mengunjungi sebuah situs web. Cookie membantu platform mengingat sesi dan preferensi Anda agar pengalaman penggunaan menjadi lebih lancar.</p>
+      </div>
+    </div>
+    <div class="lp-section">
+      <div class="lp-s-head">
+        <div class="lp-num lp-num-purple">2</div>
+        <div class="lp-s-title">Cookie yang Kami Gunakan</div>
+      </div>
+      <div class="lp-s-body lp-dot-purple">
+        <p>Rukun Mapan hanya menggunakan cookie yang diperlukan untuk fungsi dasar platform:</p>
+        <ul>
+          <li><strong>Cookie Sesi (Session Cookie)</strong> - Menjaga status login Anda selama menggunakan platform. Cookie ini otomatis terhapus saat browser ditutup.</li>
+          <li><strong>Cookie Autentikasi (Supabase Auth)</strong> - Token aman yang digunakan untuk memverifikasi identitas Anda saat berpindah halaman.</li>
+          <li><strong>Cookie Keamanan (Cloudflare Turnstile)</strong> - Digunakan untuk verifikasi bahwa pengguna adalah manusia, bukan bot.</li>
+        </ul>
+        <div class="lp-note lp-note-purple"><i class="fa-solid fa-circle-check" style="margin-right:8px"></i>Kami tidak menggunakan cookie pelacak pihak ketiga, cookie iklan, atau Google Analytics.</div>
+      </div>
+    </div>
+    <div class="lp-section">
+      <div class="lp-s-head">
+        <div class="lp-num lp-num-purple">3</div>
+        <div class="lp-s-title">Mengontrol Cookie</div>
+      </div>
+      <div class="lp-s-body">
+        <p>Anda dapat mengatur atau menonaktifkan cookie melalui pengaturan browser Anda. Namun perlu diketahui bahwa menonaktifkan cookie sesi akan membuat fitur login tidak dapat berfungsi dengan baik.</p>
+        <p>Sebagian besar browser modern memungkinkan Anda melihat, mengelola, dan menghapus cookie yang tersimpan melalui menu Pengaturan atau Preferensi.</p>
+      </div>
+    </div>
+    <div class="lp-footer">
+      <span class="lp-footer-date"><i class="fa-regular fa-calendar" style="margin-right:6px"></i>Terakhir diperbarui: 20 Agustus 2026</span>
+      <button class="lp-back-btn" style="background:linear-gradient(135deg,#7B5EA7,#9B7EC7);color:#fff;box-shadow:0 4px 14px rgba(123,94,167,.32)" onclick="history.back()"><i class="fa-solid fa-arrow-left"></i> Kembali</button>
+    </div>
+  </div>
+</div>
+
 <footer id="mainFooter">
   <div class="container">
     <div class="footer-grid">
@@ -2937,8 +3447,8 @@
         <ul>
           <li><button onclick="goPage('cara-kerja')">Cara Kerja</button></li>
           <li><button onclick="goPage('kontak')">Pusat Bantuan</button></li>
-          <li><button>Kebijakan Privasi</button></li>
-          <li><button>Syarat & Ketentuan</button></li>
+          <li><button onclick="goPage('privasi')">Kebijakan Privasi</button></li>
+          <li><button onclick="goPage('ketentuan')">Syarat & Ketentuan</button></li>
           <li><button onclick="openAuth('daftar')">Daftar Gratis</button></li>
         </ul>
       </div>
@@ -2946,7 +3456,7 @@
     <div class="footer-bottom">
       <div>© 2026 RUKUN MAPAN. Hak Cipta Dilindungi. Dibuat dengan <i class="fa-solid fa-heart" style="color:#E05252"></i> untuk Keluarga Indonesia.</div>
       <div class="footer-bottom-links">
-        <button>Privasi</button><button>Ketentuan</button><button>Cookie</button>
+        <button onclick="goPage('privasi')">Privasi</button><button onclick="goPage('ketentuan')">Ketentuan</button><button onclick="goPage('cookie')">Cookie</button>
       </div>
     </div>
   </div>
@@ -3097,6 +3607,252 @@
   <div id="turnstile-beranda-widget"></div>
 </div>
 
+
+<!-- =========================================
+     LEGAL MODALS: Privasi, Ketentuan, Cookie
+========================================= -->
+
+
+<div id="legalModalOv" onclick="if(event.target===this)closeLegalModal()">
+  <div class="lm-box" id="legalModalBox">
+
+    <!-- PRIVASI -->
+    <div id="lmPrivasi" class="lm-privasi" style="display:none;flex-direction:column;height:100%">
+      <div class="lm-head">
+        <div class="lm-head-left">
+          <div class="lm-icon ic-privasi"><i class="fa-solid fa-shield-halved"></i></div>
+          <div>
+            <div class="lm-title">Kebijakan Privasi</div>
+            <div class="lm-subtitle">Rukun Mapan · Berlaku mulai 20 Agustus 2026</div>
+          </div>
+        </div>
+        <button class="lm-close" onclick="closeLegalModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="lm-body">
+        <div class="lm-section">
+          <div class="lm-s-head">
+            <div class="lm-s-num lm-privasi">1</div>
+            <div class="lm-s-title">Data yang Kami Kumpulkan</div>
+          </div>
+          <div class="lm-s-body">
+            <p>Saat Anda mendaftar atau menggunakan Rukun Mapan, kami menyimpan beberapa data berikut:</p>
+            <ul>
+              <li>Alamat email dan nama yang Anda daftarkan</li>
+              <li>Preferensi dan jawaban yang Anda isi pada fitur Roadmap Keluarga dan Dashboard SDG</li>
+              <li>Data sesi login (token autentikasi)</li>
+              <li>Aktivitas umum di dalam platform (halaman yang dikunjungi, fitur yang digunakan)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="lm-divider"></div>
+        <div class="lm-section">
+          <div class="lm-s-head">
+            <div class="lm-s-num lm-privasi">2</div>
+            <div class="lm-s-title">Cara Kami Menggunakan Data</div>
+          </div>
+          <div class="lm-s-body">
+            <p>Data Anda digunakan semata-mata untuk keperluan berikut:</p>
+            <ul>
+              <li>Menjalankan dan meningkatkan layanan Rukun Mapan</li>
+              <li>Menyimpan kemajuan dan preferensi Anda agar tidak hilang saat kembali login</li>
+              <li>Mengirimkan informasi terkait layanan jika Anda memberikan izin</li>
+            </ul>
+          </div>
+        </div>
+        <div class="lm-divider"></div>
+        <div class="lm-section">
+          <div class="lm-s-head">
+            <div class="lm-s-num lm-privasi">3</div>
+            <div class="lm-s-title">Penyimpanan Data</div>
+          </div>
+          <div class="lm-s-body">
+            <p>Data Anda disimpan menggunakan layanan Supabase, sebuah platform database yang aman dan terenkripsi. Data tidak pernah dijual, disewakan, atau diberikan kepada pihak ketiga untuk tujuan komersial.</p>
+            <div class="lm-note">
+              <i class="fa-solid fa-lock" style="margin-right:7px"></i>Seluruh data dikirim melalui koneksi terenkripsi (HTTPS/TLS) dan disimpan dalam server yang terlindungi.
+            </div>
+          </div>
+        </div>
+        <div class="lm-divider"></div>
+        <div class="lm-section">
+          <div class="lm-s-head">
+            <div class="lm-s-num lm-privasi">4</div>
+            <div class="lm-s-title">Hak Pengguna</div>
+          </div>
+          <div class="lm-s-body">
+            <p>Sebagai pengguna, Anda berhak untuk:</p>
+            <ul>
+              <li>Meminta akses ke data pribadi yang kami simpan</li>
+              <li>Meminta penghapusan akun dan seluruh data terkait</li>
+              <li>Menghubungi kami melalui halaman Kontak untuk pertanyaan seputar privasi</li>
+            </ul>
+          </div>
+        </div>
+        <div class="lm-divider"></div>
+        <div class="lm-section">
+          <div class="lm-s-head">
+            <div class="lm-s-num lm-privasi">5</div>
+            <div class="lm-s-title">Perubahan Kebijakan</div>
+          </div>
+          <div class="lm-s-body">
+            <p>Jika ada perubahan signifikan pada kebijakan ini, kami akan memberikan pemberitahuan melalui platform. Penggunaan layanan setelah perubahan berlaku dianggap sebagai persetujuan terhadap kebijakan yang diperbarui.</p>
+          </div>
+        </div>
+      </div>
+      <div class="lm-foot">
+        <span class="lm-updated"><i class="fa-regular fa-calendar" style="margin-right:5px"></i>Terakhir diperbarui: 20 Agustus 2026</span>
+        <button class="lm-foot-btn" onclick="closeLegalModal()">Mengerti</button>
+      </div>
+    </div>
+
+    <!-- KETENTUAN -->
+    <div id="lmKetentuan" class="lm-ketentuan" style="display:none;flex-direction:column;height:100%">
+      <div class="lm-head">
+        <div class="lm-head-left">
+          <div class="lm-icon ic-ketentuan"><i class="fa-solid fa-file-contract"></i></div>
+          <div>
+            <div class="lm-title">Syarat &amp; Ketentuan</div>
+            <div class="lm-subtitle">Rukun Mapan · Berlaku mulai 20 Agustus 2026</div>
+          </div>
+        </div>
+        <button class="lm-close" onclick="closeLegalModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="lm-body">
+        <div class="lm-section">
+          <div class="lm-s-head">
+            <div class="lm-s-num lm-ketentuan">1</div>
+            <div class="lm-s-title">Penerimaan Ketentuan</div>
+          </div>
+          <div class="lm-s-body">
+            <p>Dengan mengakses atau menggunakan Rukun Mapan, Anda menyatakan telah membaca, memahami, dan menyetujui syarat dan ketentuan ini. Jika tidak setuju, harap hentikan penggunaan platform.</p>
+          </div>
+        </div>
+        <div class="lm-divider"></div>
+        <div class="lm-section">
+          <div class="lm-s-head">
+            <div class="lm-s-num lm-ketentuan">2</div>
+            <div class="lm-s-title">Kelayakan Pengguna</div>
+          </div>
+          <div class="lm-s-body">
+            <p>Platform ini ditujukan untuk pengguna berusia minimal 18 tahun atau yang telah menikah. Pengguna bertanggung jawab memastikan bahwa informasi yang didaftarkan adalah benar dan akurat.</p>
+          </div>
+        </div>
+        <div class="lm-divider"></div>
+        <div class="lm-section">
+          <div class="lm-s-head">
+            <div class="lm-s-num lm-ketentuan">3</div>
+            <div class="lm-s-title">Penggunaan yang Diperbolehkan</div>
+          </div>
+          <div class="lm-s-body">
+            <p>Anda boleh menggunakan Rukun Mapan untuk keperluan pribadi dan edukasi. Penggunaan yang tidak diperbolehkan meliputi:</p>
+            <ul>
+              <li>Menyalahgunakan fitur platform untuk tujuan penipuan atau merugikan orang lain</li>
+              <li>Mencoba mengakses data pengguna lain tanpa izin</li>
+              <li>Mendistribusikan konten platform secara komersial tanpa izin tertulis</li>
+            </ul>
+          </div>
+        </div>
+        <div class="lm-divider"></div>
+        <div class="lm-section">
+          <div class="lm-s-head">
+            <div class="lm-s-num lm-ketentuan">4</div>
+            <div class="lm-s-title">Konten dan Informasi</div>
+          </div>
+          <div class="lm-s-body">
+            <p>Seluruh konten di Rukun Mapan, termasuk artikel, simulasi, dan panduan, bersifat informatif dan edukatif. Konten ini bukan pengganti nasihat hukum, agama, atau keuangan dari profesional yang berwenang.</p>
+            <div class="lm-note lm-note-gold">
+              <i class="fa-solid fa-circle-info" style="margin-right:7px"></i>Simulasi biaya nikah dan roadmap keuangan adalah estimasi. Hasil nyata dapat berbeda tergantung kondisi masing-masing keluarga.
+            </div>
+          </div>
+        </div>
+        <div class="lm-divider"></div>
+        <div class="lm-section">
+          <div class="lm-s-head">
+            <div class="lm-s-num lm-ketentuan">5</div>
+            <div class="lm-s-title">Batasan Tanggung Jawab</div>
+          </div>
+          <div class="lm-s-body">
+            <p>Rukun Mapan tidak bertanggung jawab atas kerugian yang timbul akibat keputusan yang diambil berdasarkan informasi di platform ini. Layanan disediakan sebagaimana adanya tanpa jaminan ketersediaan 100% setiap saat.</p>
+          </div>
+        </div>
+        <div class="lm-divider"></div>
+        <div class="lm-section">
+          <div class="lm-s-head">
+            <div class="lm-s-num lm-ketentuan">6</div>
+            <div class="lm-s-title">Penghentian Akun</div>
+          </div>
+          <div class="lm-s-body">
+            <p>Kami berhak menangguhkan atau menghapus akun yang terbukti melanggar ketentuan ini. Pengguna juga dapat menghapus akun kapan saja melalui menu pengaturan atau dengan menghubungi tim kami.</p>
+          </div>
+        </div>
+      </div>
+      <div class="lm-foot">
+        <span class="lm-updated"><i class="fa-regular fa-calendar" style="margin-right:5px"></i>Terakhir diperbarui: 20 Agustus 2026</span>
+        <button class="lm-foot-btn" style="background:linear-gradient(135deg,#C8963E,#E8B96A)" onclick="closeLegalModal()">Mengerti</button>
+      </div>
+    </div>
+
+    <!-- COOKIE -->
+    <div id="lmCookie" class="lm-cookie" style="display:none;flex-direction:column;height:100%">
+      <div class="lm-head">
+        <div class="lm-head-left">
+          <div class="lm-icon ic-cookie"><i class="fa-solid fa-cookie-bite"></i></div>
+          <div>
+            <div class="lm-title">Kebijakan Cookie</div>
+            <div class="lm-subtitle">Rukun Mapan · Berlaku mulai 20 Agustus 2026</div>
+          </div>
+        </div>
+        <button class="lm-close" onclick="closeLegalModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="lm-body">
+        <div class="lm-section">
+          <div class="lm-s-head">
+            <div class="lm-s-num lm-cookie">1</div>
+            <div class="lm-s-title">Apa Itu Cookie?</div>
+          </div>
+          <div class="lm-s-body">
+            <p>Cookie adalah file teks kecil yang disimpan di perangkat Anda saat mengunjungi sebuah situs web. Cookie membantu platform mengingat sesi dan preferensi Anda agar pengalaman penggunaan menjadi lebih lancar.</p>
+          </div>
+        </div>
+        <div class="lm-divider"></div>
+        <div class="lm-section">
+          <div class="lm-s-head">
+            <div class="lm-s-num lm-cookie">2</div>
+            <div class="lm-s-title">Cookie yang Kami Gunakan</div>
+          </div>
+          <div class="lm-s-body">
+            <p>Rukun Mapan hanya menggunakan cookie yang diperlukan untuk fungsi dasar platform:</p>
+            <ul>
+              <li><strong>Cookie Sesi (Session Cookie)</strong> - Menjaga status login Anda selama menggunakan platform. Cookie ini otomatis terhapus saat browser ditutup.</li>
+              <li><strong>Cookie Autentikasi (Supabase Auth)</strong> - Token aman yang digunakan untuk memverifikasi identitas Anda saat berpindah halaman.</li>
+              <li><strong>Cookie Keamanan (Cloudflare Turnstile)</strong> - Digunakan untuk verifikasi bahwa pengguna adalah manusia, bukan bot.</li>
+            </ul>
+            <div class="lm-note lm-note-purple">
+              <i class="fa-solid fa-circle-check" style="margin-right:7px"></i>Kami tidak menggunakan cookie pelacak pihak ketiga, cookie iklan, atau Google Analytics.
+            </div>
+          </div>
+        </div>
+        <div class="lm-divider"></div>
+        <div class="lm-section">
+          <div class="lm-s-head">
+            <div class="lm-s-num lm-cookie">3</div>
+            <div class="lm-s-title">Mengontrol Cookie</div>
+          </div>
+          <div class="lm-s-body">
+            <p>Anda dapat mengatur atau menonaktifkan cookie melalui pengaturan browser Anda. Namun perlu diketahui bahwa menonaktifkan cookie sesi akan membuat fitur login tidak dapat berfungsi dengan baik.</p>
+            <p>Sebagian besar browser modern memungkinkan Anda melihat, mengelola, dan menghapus cookie yang tersimpan melalui menu Pengaturan atau Preferensi.</p>
+          </div>
+        </div>
+      </div>
+      <div class="lm-foot">
+        <span class="lm-updated"><i class="fa-regular fa-calendar" style="margin-right:5px"></i>Terakhir diperbarui: 20 Agustus 2026</span>
+        <button class="lm-foot-btn" style="background:linear-gradient(135deg,#7B5EA7,#9B7EC7)" onclick="closeLegalModal()">Mengerti</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <script src="script.js"></script>
+
 </body>
 </html>
